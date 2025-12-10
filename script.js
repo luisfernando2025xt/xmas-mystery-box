@@ -83,11 +83,20 @@ function nextSentence() {
 // Generate PDF
 function downloadLetterPDF() {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    
+    // 370 × 570 points
+    const doc = new jsPDF({
+        unit: "pt",        // points
+        format: [370, 570] // width, height in points
+    });
+
     doc.setFont("Courier", "normal");
     doc.setFontSize(14);
+
     const text = currentLetter.join("\n\n");
-    doc.text(`Dear ${userName},\n\n` + text, 10, 20);
-    doc.text("\n🎅✨ Your special gift awaits!", 10, 200);
+    doc.text(`Dear ${userName},\n\n` + text, 10, 30); // 10pt margin from left, 30pt from top
+
+    doc.text("\n🎅✨ Your special gift awaits!", 10, 550); // adjust vertical if needed
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
