@@ -2,8 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>Santa Access</title>
+
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 body {
@@ -47,35 +49,96 @@ button {
 
 <div id="letter-section" class="hidden">
     <p id="letterText"></p>
-    <button onclick="nextSentence()">Continue</button>
+    <button onclick="nextSentence()">Continue Letter</button>
+    <button id="downloadPDF" class="hidden" onclick="downloadLetterPDF()">Download PDF</button>
 </div>
 
 <script src="script.js"></script>
 
 <script>
-const letter = [
-    "Ho ho ho, I’ve been watching you closely this year…",
-    "You have grown more than you realize.",
-    "Life tested you, shaped you, but never broke you.",
-    "And I wrote this letter for a reason…",
-    "Because something big is coming your way."
-];
+// Example letters (this will be replaced by your letters.json mapping)
+const letters = {
+    "AB12CD34": [
+        "Ho ho ho, I’ve been watching you closely this year…",
+        "You have grown more than you realize.",
+        "Life tested you, shaped you, but never broke you.",
+        "And I wrote this letter for a reason…",
+        "Because something big is coming your way."
+    ],
+    "XY98ZT77": [
+        "Merry Christmas! This year has been full of surprises…",
+        "You’ve handled challenges with courage and heart.",
+        "And now, a special gift is coming just for you.",
+        "Remember, magic finds those who believe.",
+        "Keep your heart open, the best is yet to come."
+    ]
+};
 
-let index = 0;
+let validCodes = {};
+let currentCode = "";
+let userName = "";
+let letterIndex = 0;
+let currentLetter = [];
 
+// Load codes.json (your existing system)
+fetch("codes.json")
+  .then(r => r.json())
+  .then(data => { validCodes = data; });
+
+// Verify code
+function verifyCode() {
+    const codeInput = document.getElementById("codeInput").value.trim();
+    if (!(codeInput in validCodes)) { alert("Invalid code"); return; }
+    if (validCodes[codeInput].used) { alert("This code has already been used."); return; }
+    currentCode = codeInput;
+    document.getElementById("code-section").classList.add("hidden");
+    document.getElementById("name-section").classList.remove("hidden");
+}
+
+// Start letter
 function startLetter() {
+    const input = document.getElementById("nameInput").value.trim();
+    if (!input) return alert("Please enter your name.");
+    userName = input;
+    markCodeUsed();
     document.getElementById("name-section").classList.add("hidden");
     document.getElementById("letter-section").classList.remove("hidden");
-
-    markCodeUsed();
+    currentLetter = letters[currentCode] || letters["AB12CD34"]; // default
+    letterIndex = 0;
     nextSentence();
 }
 
+// Show next sentence
 function nextSentence() {
-    if (index >= letter.length) return;
+    if (letterIndex >= currentLetter.length) {
+        document.getElementById("downloadPDF").classList.remove("hidden");
+        return;
+    }
+    const letterText = document.getElementById("letterText");
+    letterText.innerHTML += currentLetter[letterIndex] + "<br><br>";
+    letterIndex++;
+}
 
-    document.getElementById("letterText").innerHTML += letter[index] + "<br><br>";
-    index++;
+// Mark code as used
+function markCodeUsed() {
+    validCodes[currentCode].used = true;
+    fetch("codes.json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validCodes)
+    });
+}
+
+// Generate PDF
+function downloadLetterPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFont("Courier", "normal");
+    doc.setFontSize(14);
+    const text = currentLetter.join("\n\n");
+    doc.text(`Dear ${userName},\n\n` + text, 10, 20);
+    doc.text("\n🎅✨ Your special gift awaits!", 10, 200);
+    doc.save(`Santa_Letter_${userName}.pdf`);
 }
 </script>
 
