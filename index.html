@@ -15,8 +15,25 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        overflow: hidden; /* Will be changed later */
+        overflow: hidden; /* Scroll disabled at first */
         transition: background 1s ease-in-out;
+    }
+
+    /* Snow effect */
+    .snowflake {
+        position: fixed;
+        top: -10px;
+        color: white;
+        font-size: 12px;
+        opacity: 0.8;
+        pointer-events: none;
+        animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(110vh);
+        }
     }
 
     .container {
@@ -34,6 +51,7 @@
         cursor: pointer;
         transition: 0.3s;
     }
+
     button:hover {
         background: #fff;
         color: #000;
@@ -57,12 +75,25 @@
         transition: opacity 1.2s ease-in-out;
     }
 
-    /* Santa letter section */
+    /* Shaking animation */
+    @keyframes shake {
+        0% { transform: translate(0); }
+        25% { transform: translate(4px, -4px); }
+        50% { transform: translate(-4px, 4px); }
+        75% { transform: translate(4px, 4px); }
+        100% { transform: translate(0); }
+    }
+
+    .shake {
+        animation: shake 0.4s ease-in-out;
+    }
+
+    /* Santa Letter Section */
     #letter-section {
         margin-top: 40px;
         display: none;
         opacity: 0;
-        transition: opacity 1.2s ease-in-out;
+        transition: opacity 1s ease-in-out;
     }
 
     input {
@@ -85,35 +116,8 @@
         border: 1px solid white;
         display: none;
         opacity: 0;
-        transition: opacity 1.5s ease-in-out;
+        transition: opacity 1.2s ease-in-out;
     }
-
-    /* Snow effect */
-    .snowflake {
-        position: fixed;
-        top: -10px;
-        color: white;
-        font-size: 12px;
-        opacity: 0.8;
-        pointer-events: none;
-        animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-        to { transform: translateY(110vh); }
-    }
-
-    /* Shake */
-    @keyframes shake {
-        0% { transform: translate(0); }
-        25% { transform: translate(4px, -4px); }
-        50% { transform: translate(-4px, 4px); }
-        75% { transform: translate(4px, 4px); }
-        100% { transform: translate(0); }
-    }
-
-    .shake { animation: shake 0.4s ease-in-out; }
-
 </style>
 </head>
 
@@ -126,6 +130,7 @@
     <div id="ascii-box"></div>
     <div id="typing"></div>
 
+    <!-- SANTA LETTER BLOCK -->
     <div id="letter-section">
         <p>To receive your personalized Santa Letter, type your name:</p>
         <input id="nameInput" placeholder="Your name..." />
@@ -135,7 +140,7 @@
 </div>
 
 <script>
-// ASCII ART
+// ASCII ART (premium christmas face)
 const asciiArt = `
           * *.  
         *     *  
@@ -146,6 +151,7 @@ const asciiArt = `
           * *       
 `;
 
+// Random surprise messages
 const messages = [
     "Something magical whispered your name tonight.",
     "You weren’t expecting this… but destiny was expecting you.",
@@ -188,19 +194,22 @@ function openBox() {
 
     createSnow();
 
-    // Reveal Santa letter section
+    // REVEAL SANTA LETTER BLOCK
     setTimeout(() => {
         document.getElementById("letter-section").style.display = "block";
+
         setTimeout(() => {
             document.getElementById("letter-section").style.opacity = 1;
 
-            // NOW allow scrolling
+            // Enable scroll now
             document.body.style.overflow = "auto";
             document.body.style.height = "auto";
         }, 200);
+
     }, 2500);
 }
 
+// Snow particles
 function createSnow() {
     for (let i = 0; i < 40; i++) {
         const snow = document.createElement("div");
@@ -209,10 +218,12 @@ function createSnow() {
         snow.style.left = Math.random() * 100 + "vw";
         snow.style.animationDuration = 2 + Math.random() * 3 + "s";
         document.body.appendChild(snow);
+
         setTimeout(() => snow.remove(), 5000);
     }
 }
 
+// Generate Santa Letter
 function generateLetter() {
     const name = document.getElementById("nameInput").value.trim();
     if (!name) return;
@@ -241,9 +252,9 @@ Merry Christmas,
     const output = document.getElementById("letter-output");
     output.textContent = letter;
     output.style.display = "block";
+
     setTimeout(() => output.style.opacity = 1, 200);
 }
-
 </script>
 
 </body>
