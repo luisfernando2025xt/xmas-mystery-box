@@ -1,193 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>XMAS Mystery Box</title>
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>XMAS Mystery Box — Santa Letter</title>
 <style>
-    body {
-        margin: 0;
-        background: #000;
-        color: #fff;
-        font-family: "Courier New", monospace;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* para que empiece arriba */
-        min-height: 100vh;
-        overflow-y: auto; /* <<< AQUI SE AGREGA EL SCROLL */
-    }
-
-    /* Snow effect */
-    .snowflake {
-        position: fixed;
-        top: -10px;
-        color: white;
-        font-size: 12px;
-        opacity: 0.8;
-        pointer-events: none;
-        animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-        to {
-            transform: translateY(110vh);
-        }
-    }
-
-    .container {
-        text-align: center;
-        max-width: 600px;
-        padding: 20px;
-        margin-top: 40px;
-    }
-
-    button {
-        background: none;
-        border: 2px solid #fff;
-        padding: 12px 25px;
-        color: #fff;
-        font-size: 18px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    button:hover {
-        background: #fff;
-        color: #000;
-    }
-
-    #ascii-box {
-        margin-top: 30px;
-        white-space: pre;
-        display: none;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        font-size: 14px;
-        line-height: 16px;
-    }
-
-    #typing {
-        display: none;
-        font-size: 16px;
-        margin-top: 20px;
-        opacity: 0;
-        transition: opacity 1.2s ease-in-out;
-    }
-
-    /* Shaking animation */
-    @keyframes shake {
-        0% { transform: translate(0); }
-        25% { transform: translate(4px, -4px); }
-        50% { transform: translate(-4px, 4px); }
-        75% { transform: translate(4px, 4px); }
-        100% { transform: translate(0); }
-    }
-
-    .shake {
-        animation: shake 0.4s ease-in-out;
-    }
+  :root{--soft:#fff;--bg:#000;--accent:#ffd86b}
+  html,body{margin:0;background:var(--bg);color:var(--soft);font-family:"Courier New",monospace;min-height:100vh;overflow-y:auto}
+  .stage{display:flex;justify-content:center;align-items:flex-start;padding:40px 20px;box-sizing:border-box}
+  .card{max-width:720px;width:100%;text-align:center}
+  h1{margin:0 0 12px 0}
+  button{background:none;border:2px solid var(--soft);color:var(--soft);padding:10px 20px;font-size:16px;cursor:pointer;border-radius:6px}
+  button:hover{background:var(--soft);color:#000}
+  .small{padding:8px 12px;margin-left:8px;font-size:14px}
+  #ascii-box{margin-top:22px;white-space:pre;font-size:15px;line-height:18px;display:none;opacity:0;transition:opacity .6s}
+  #message{margin-top:18px;font-size:16px;min-height:48px;opacity:0;transition:opacity .6s}
+  #claimArea{margin-top:18px;display:none;opacity:0;transition:opacity .5s}
+  #nameArea{margin-top:14px;display:none;opacity:0;transition:opacity .5s}
+  input.masked{padding:10px;width:60%;font-size:15px;background:#111;border:1px solid #444;color:var(--soft);text-align:center}
+  #getBtn{margin-top:10px}
+  #letterArea{margin-top:22px;text-align:left;white-space:pre-line;font-size:16px;line-height:22px;display:none;opacity:0;transition:opacity .6s;padding:14px;border:1px solid rgba(255,255,255,0.06);border-radius:8px;background:rgba(255,255,255,0.01)}
+  #nextBtn{margin-top:12px}
+  .snowflake{position:fixed;top:-10px;color:var(--soft);pointer-events:none;opacity:.8;font-size:12px;z-index:1}
+  .final-santa{margin-top:18px;white-space:pre;font-family:"Courier New",monospace;display:none;opacity:0;transition:opacity .8s}
+  .glow { text-shadow:0 0 10px rgba(255,216,107,0.8); border-radius:6px; }
+  .tiny {font-size:13px;color:rgba(255,255,255,0.6);margin-top:8px}
+  /* small shake */
+  @keyframes shake{0%{transform:translate(0)}25%{transform:translate(4px,-4px)}50%{transform:translate(-4px,4px)}75%{transform:translate(4px,4px)}100%{transform:translate(0)}}
+  .shake{animation:shake .4s ease-in-out}
 </style>
 </head>
-
 <body>
-
-<div class="container">
+<div class="stage">
+  <div class="card">
     <h1>XMAS Mystery Box</h1>
-    <button onclick="startShake()">Open Mystery Box</button>
 
-    <div id="ascii-box"></div>
-    <div id="typing"></div>
-</div>
+    <!-- Open button -->
+    <div>
+      <button id="openBtn">Open Mystery Box</button>
+      <span class="tiny">One surprise per open.</span>
+    </div>
 
-<script>
-// ASCII ART (premium christmas face)
-const asciiArt = `
-          * *.  
+    <!-- ASCII art -->
+    <div id="ascii-box">
+`          * *.  
         *     *  
        *  o o  *  
       *    ∆    *  
        *  ---  *  
         *     *  
-          * *       
-`;
+          * *       `
+    </div>
 
-// Random surprise messages
-const messages = [
-    "It started quietly… a soft pull in the air, as if something was reaching for you.",
-    "You didn’t notice it at first, but the world had already begun rearranging itself in your favor.",
-    "Sometimes destiny doesn’t knock—it whispers, and tonight it whispered your name.",
-    "Maybe you’ve felt it lately… that strange mix of fear and excitement when something big is coming.",
-    "That feeling wasn’t random. It was alignment. A signal. A shift.",
-    "Every choice you made this year—good or bad—has been secretly compounding into momentum.",
-    "You’re standing at the edge of a chapter that only opens for people who dare to believe again.",
-    "And whether you see it or not, your courage has already unlocked doors ahead of you.",
-    "Someone out there is thinking about you right now, grateful for the version of you they haven’t met yet.",
-    "Life has been holding something behind its back… waiting for you to be ready to receive it.",
-    "You’ve grown in ways you didn’t give yourself credit for, and the universe took note.",
-    "The delays weren’t punishment—they were preparation.",
-    "The setbacks weren’t endings—they were redirections.",
-    "There is a blessing with your name on it, moving toward you with a slow and steady certainty.",
-    "And when it reaches you, everything that once felt heavy will suddenly make sense.",
-    "Your story is not late. It's perfectly timed.",
-    "The magic you think you’re missing is actually gathering speed right now.",
-    "The version of you reading this is stronger than the one who started this year.",
-    "You’re closer than you think, and more capable than you realize.",
-    "Keep opening the boxes life hands you—one of them is the turning point.",
-    "And tonight… this one might just be the first sign."
+    <!-- premium random message -->
+    <div id="message"></div>
+
+    <!-- Claim question -->
+    <div id="claimArea">
+      <p>Do you want to claim your Santa's letter?</p>
+      <button id="yesBtn">Yes — claim my letter</button>
+    </div>
+
+    <!-- Name input (masked) -->
+    <div id="nameArea">
+      <p>Write your name (it will stay hidden):</p>
+      <input id="nameInput" class="masked" autocomplete="off" autocapitalize="words" placeholder="Type your name..." />
+      <div><button id="getBtn">Get My Letter</button></div>
+    </div>
+
+    <!-- Letter container -->
+    <div id="letterArea"></div>
+    <div style="text-align:center">
+      <button id="nextBtn" class="small" style="display:none">Next sentence</button>
+    </div>
+
+    <!-- Final Santa ASCII -->
+    <div id="finalSanta" class="final-santa glow"></div>
+  </div>
+</div>
+
+<script>
+/* ===== DATA ===== */
+const premiumMessages = [
+  "There’s a version of you in the future who is begging you not to give up right now.",
+  "You weren’t late… life was rearranging the stage so that you’d enter at the perfect second.",
+  "Something you lost this year was actually clearing space for something that needs both hands free.",
+  "Someone is about to treat you with the kindness you forgot you deserved.",
+  "There’s a door you’ve been knocking on, but the funny part is that your name is already written inside.",
+  "Nothing is stuck—some transitions just don’t announce themselves.",
+  "The universe has been unusually quiet about you lately… that’s always a sign that something big is loading.",
+  "Your potential is starting to make the right people curious.",
+  "This season of your life won’t require who you’ve been… it will demand who you’re becoming.",
+  "Life is currently connecting dots for you—silently, but with intention.",
+  "Strange how you thought you were behind, while your timing was being handcrafted.",
+  "Someone is going to show up for you in a way no one ever has.",
+  "You are one bold decision away from a life that would shock your past self.",
+  "You’re not imagining it—something is following you… opportunity.",
+  "You didn’t lose the path. The path just curved where you couldn’t see.",
+  "A lot of the pain you felt was actually your old life resisting departure.",
+  "There’s a future memory of you smiling that life is steering you toward.",
+  "You are entering a chapter you once wished existed.",
+  "Your name is being mentioned in rooms you don’t know exist yet.",
+  "The moment you stopped forcing things, they quietly started aligning.",
+  "Not everything you’re healing from was your fault—some wounds were lessons, not punishments.",
+  "The version of you that once felt invisible is starting to be seen.",
+  "Life is preparing to give you something that will finally feel like ‘this is what I was waiting for.’",
+  "You’re about to understand why things had to move so slowly for a while.",
+  "Not everyone gets a second chance. You’re about to get three.",
+  "The universe doesn’t test you to break you—it tests you to confirm who can handle what’s next.",
+  "Something you prayed for forgot your address… but it finally found it."
 ];
 
-function typeWriter(text, element, speed = 40) {
-    let i = 0;
-    element.style.display = "block";
-    const interval = setInterval(() => {
-        element.textContent += text.charAt(i);
-        i++;
-        if (i >= text.length) clearInterval(interval);
-    }, speed);
+// Funny but meaningful long Santa letter (array of sentences)
+const santaSentences = [
+ "Ho ho ho — first, a small confession: the elves and I compete over who believes in humans more. I keep winning.",
+ "I checked my list twice and then three times for your name. It’s there, and it sparkles in a very embarrassing way.",
+ "This year you kept trying things that scared you — those little scares grew into a new kind of courage.",
+ "I watched you misplace a habit and then create a new one. That’s how grown-up miracles start, quietly.",
+ "You made someone laugh when they needed it, even if you didn’t notice — that laugh is currency in my workshop.",
+ "A surprising door will appear — lean in close and don’t be suspicious of its simplicity.",
+ "If you ever doubt your timing, remember: slow is sometimes the easiest way to arrive exactly where you must.",
+ "You have strange little talents that don’t look like talents until someone gives them a price: keep practicing.",
+ "Stop apologizing for the things that once saved you; they are the same things that will now carry you forward.",
+ "An idea you shelved will show up wearing a better outfit and new friends.",
+ "Do not be afraid of asking for help — elves are great, but humans who ask are legendary.",
+ "If you get an odd invitation, say yes; I once said yes to a reindeer-design committee and it changed everything.",
+ "You will receive a small, ridiculous gift and it will become a large, ridiculous memory.",
+ "Keep a pocket in your day for the unexpected; it’s where the stardust accumulates.",
+ "There will be a tiny victory that feels like nothing — collect it, polish it, show it to your future self.",
+ "The person who thought you weren’t listening is actually the one learning the most from you.",
+ "You will be offered a choice that looks like two doors but is actually one long hallway. Pick the hallway.",
+ "If fear knocks, let curiosity answer — fear gets bored when curiosity is persistent.",
+ "A joke you told to survive will be the same joke you’ll use to bond with someone important.",
+ "You’re about to be paid back for a kindness you forgot you gave.",
+ "Your weird mix of stubbornness and softness is a rare currency; spend it wisely.",
+ "There will be a moment when you realize the map you followed was only half the story — the rest you will draw.",
+ "If you feel small, remember: small things are easy to move; great things are moved by small hands doing the same thing again.",
+ "Don’t trade your time for certainty; sometimes the messy adventure is the profitable one.",
+ "You will find a reason to laugh where you expected to cry; laugh first and lessons come easier.",
+ "A message will arrive from an old friend or from a person you haven’t met yet — say hello back.",
+ "Soon, an ordinary day will hold something that reads like a beginning; treat it like one.",
+ "Your next success will be loud to everyone else but gentle to you; let it be both.",
+ "When you are tempted to measure yourself by someone else’s trophy, remember the secret trophies are quieter and heavier.",
+ "And finally — keep opening boxes. They usually contain things you didn’t know you needed, like courage, keys, and very good socks."
+];
+
+/* ===== UI ELEMENTS ===== */
+const openBtn = document.getElementById('openBtn');
+const asciiBox = document.getElementById('ascii-box');
+const msgEl = document.getElementById('message');
+const claimArea = document.getElementById('claimArea');
+const yesBtn = document.getElementById('yesBtn');
+const nameArea = document.getElementById('nameArea');
+const nameInput = document.getElementById('nameInput');
+const getBtn = document.getElementById('getBtn');
+const letterArea = document.getElementById('letterArea');
+const nextBtn = document.getElementById('nextBtn');
+const finalSanta = document.getElementById('finalSanta');
+
+/* ===== STATE ===== */
+let storedName = '';
+let currentSentenceIndex = 0;
+
+/* ===== UTIL ===== */
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* typing effect for messages (short) */
+function typeWriterSimple(text, el, speed=36, cb){
+  el.textContent=''; el.style.display='block';
+  let i=0;
+  const iv=setInterval(()=>{ el.textContent += text.charAt(i); i++; if(i>=text.length){ clearInterval(iv); if(cb) cb(); } }, speed);
+  el.style.opacity = 1;
 }
 
-function startShake() {
-    const btn = document.querySelector("button");
-    btn.classList.add("shake");
-
-    setTimeout(() => {
-        btn.classList.remove("shake");
-        openBox();
-    }, 500);
+/* typing for letter sentences */
+function typeSentence(text, callback){
+  const p = document.createElement('div');
+  p.style.marginBottom = '10px';
+  p.style.opacity = '0';
+  letterArea.appendChild(p);
+  let i=0;
+  p.style.opacity = 1;
+  const iv=setInterval(()=>{ p.textContent += text.charAt(i); i++; if(i>=text.length){ clearInterval(iv); if(callback) callback(); } }, 24);
 }
 
-function openBox() {
-    const artBox = document.getElementById("ascii-box");
-    const typing = document.getElementById("typing");
-
-    artBox.style.display = "block";
-    setTimeout(() => artBox.style.opacity = 1, 100);
-
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    typeWriter(randomMessage, typing, 35);
-
-    setTimeout(() => typing.style.opacity = 1, 1500);
-
-    artBox.textContent = asciiArt;
-
-    createSnow();
+/* show snow (light) */
+function createSnow(count=26){
+  for(let i=0;i<count;i++){
+    const s=document.createElement('div'); s.className='snowflake';
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.fontSize = (8 + Math.random()*18) + 'px';
+    s.textContent = Math.random()>0.8 ? '❆' : '*';
+    document.body.appendChild(s);
+    const dur = 3 + Math.random()*5;
+    s.style.animationDuration = dur + 's';
+    setTimeout(()=>s.remove(), (dur+0.2)*1000);
+  }
 }
 
-// Snow particles
-function createSnow() {
-    for (let i = 0; i < 40; i++) {
-        const snow = document.createElement("div");
-        snow.classList.add("snowflake");
-        snow.textContent = "*";
-        snow.style.left = Math.random() * 100 + "vw";
-        snow.style.animationDuration = 2 + Math.random() * 3 + "s";
-        document.body.appendChild(snow);
+/* ===== FLOW ===== */
+openBtn.addEventListener('click', ()=>{
+  openBtn.classList.add('shake');
+  setTimeout(()=>openBtn.classList.remove('shake'),420);
 
-        setTimeout(() => snow.remove(), 5000);
+  // show ascii
+  asciiBox.style.display = 'block';
+  asciiBox.style.opacity = 1;
+
+  // random premium message
+  const m = rand(premiumMessages);
+  typeWriterSimple(m, msgEl, 30, ()=>{
+    // show claim area
+    setTimeout(()=>{ claimArea.style.display='block'; claimArea.style.opacity=1; }, 500);
+  });
+
+  createSnow(18);
+});
+
+/* when user clicks Yes to claim */
+yesBtn.addEventListener('click', ()=>{
+  claimArea.style.display = 'none';
+  nameArea.style.display = 'block';
+  nameArea.style.opacity = 1;
+  // focus input
+  nameInput.focus();
+});
+
+/* masked input logic (shows * but stores real name) */
+nameInput.addEventListener('input', (e)=>{
+  const raw = nameInput.dataset.real ? nameInput.dataset.real : '';
+  // compute new raw value by appending/deleting based on input length
+  // We capture typed character(s) by comparing previous masked length to new input length.
+  const masked = nameInput.value;
+  // If user uses backspace: detect shorter masked than previous raw length
+  if (masked.length < raw.length){
+    const newRaw = raw.slice(0, masked.length);
+    nameInput.dataset.real = newRaw;
+  } else {
+    // user added characters: we cannot capture actual char from masked value, but we can read e.data when available
+    // Use composition: fallback: if e.data undefined (pasted or multiple), try to reconstruct by subtracting masked count
+    const ch = (e.data === null || e.data === undefined) ? '' : e.data;
+    // Append ch to raw if plausible length increased by 1
+    if (ch.length > 0 && masked.length === raw.length + 1) {
+      nameInput.dataset.real = raw + ch;
+    } else if (masked.length > raw.length && ch === '') {
+      // handle paste: approximate by storing placeholder chars (user will still be masked)
+      // Do best-effort: append 'x' placeholders for length difference
+      const diff = masked.length - raw.length;
+      nameInput.dataset.real = raw + 'x'.repeat(diff);
     }
-}
-</script>
+  }
+  // render masked stars equal to length of stored real
+  const real = nameInput.dataset.real || '';
+  nameInput.value = '*'.repeat(real.length);
+});
 
+/* when user requests the letter */
+getBtn.addEventListener('click', ()=>{
+  const real = nameInput.dataset.real || '';
+  if(!real || real.length < 1) {
+    alert('Type your name first (it will stay hidden).');
+    nameInput.focus();
+    return;
+  }
+  // store name (we'll display on final present)
+  storedName = real;
+  // hide input area, show letter area and next button
+  nameArea.style.display = 'none';
+  letterArea.style.display = 'block';
+  letterArea.style.opacity = 1;
+  nextBtn.style.display = 'inline-block';
+  nextBtn.classList.add('small');
+  // initialize
+  currentSentenceIndex = 0;
+  // show first sentence immediately
+  revealNextSentence();
+});
+
+/* reveal next sentence on each click */
+function revealNextSentence(){
+  if(currentSentenceIndex >= santaSentences.length){
+    // finished: show final Santa drawing with present and name
+    showFinalSanta();
+    nextBtn.style.display = 'none';
+    return;
+  }
+  const sentence = santaSentences[currentSentenceIndex];
+  typeSentence(sentence, ()=>{
+    // after sentence typed, scroll a bit so new text is visible
+    setTimeout(()=>window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 120);
+  });
+  currentSentenceIndex++;
+}
+
+/* next button */
+nextBtn.addEventListener('click', ()=>{
+  revealNextSentence();
+});
+
+/* final santa ascii with glowing present showing the stored name */
+function showFinalSanta(){
+  const nameToShow = storedName.replace(/x/g, ''); // if we used placeholder x, try to remove
+  const displayName = (nameToShow && nameToShow.length>0) ? nameToShow : 'Friend';
+  const santaArt = `
+               _==/          i     i
+             /  /  \\  .-"""-.  /\\_/\\
+            /  /    \\/  o o  \\/ o o
+           /  /       \\  ^  /\\  ^ 
+          (  (   SANTA   "  )  )
+           \\  \\  .-"""-.  /  /
+            '._'|${centerName(displayName)}|'_.' 
+
+               [_______]
+               | ${displayName} |
+               |  (◕‿◕)  |
+               |  🎁   |
+               '-------'
+  `;
+  finalSanta.textContent = santaArt;
+  finalSanta.style.display = 'block';
+  finalSanta.style.opacity = 1;
+  // scroll into view
+  setTimeout(()=>window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 200);
+}
+
+/* helper to center name in small field */
+function centerName(n){
+  const max=7;
+  if(n.length>max) return n.slice(0,max);
+  const space = Math.max(0, Math.floor((max - n.length)/2));
+  return ' '.repeat(space) + n + ' '.repeat(max - n.length - space);
+}
+
+/* small behavior: show claim area only after message typed; we create nameArea element now */
+(function prepareNameArea(){
+  // dynamically add nameArea html to keep original structure minimal
+  const na = document.createElement('div');
+  na.id = 'nameArea';
+  na.style.display = 'none';
+  na.innerHTML = `<div style="margin-top:12px"><input id="nameInput" class="masked" autocomplete="off" placeholder="Type your name..." /></div><div style="margin-top:8px"><button id="getBtn">Get My Letter</button></div>`;
+  document.querySelector('.card').appendChild(na);
+  // rebind to new nodes
+  // Wait a tick to ensure nodes available then link event listeners above will work on same ids
+  setTimeout(()=> {
+    // If elements with same IDs exist, above references already selected earlier; to be safe, reassign them:
+    // (but we already used earlier nameInput and getBtn references bound to earlier created placeholders in DOM.)
+  },50);
+})();
+
+/* create light snow on page load */
+createSnow(14);
+
+</script>
 </body>
 </html>
