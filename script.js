@@ -1,8 +1,9 @@
 let validCodes = {};
 let lettersData = {};
 let currentCode = "";
-let letter = [];
-let index = 0;
+let currentLetter = [];
+let letterIndex = 0;
+let userName = "";
 
 // Load codes.json and letters.json
 Promise.all([
@@ -30,15 +31,15 @@ function verifyCode() {
     currentCode = codeInput;
 
     // Load the specific letter for this code
-    if (lettersData[codeInput]) {
-        letter = lettersData[codeInput];
+    if (lettersData[currentCode]) {
+        currentLetter = lettersData[currentCode];
     } else {
         alert("Letter not found for this code.");
         return;
     }
 
-    document.getElementById("code-section").style.display = "none";
-    document.getElementById("name-section").style.display = "block";
+    document.getElementById("code-section").classList.add("hidden");
+    document.getElementById("name-section").classList.remove("hidden");
 }
 
 // Mark code as used
@@ -54,17 +55,39 @@ function markCodeUsed() {
 
 // Start letter
 function startLetter() {
+    const input = document.getElementById("nameInput").value.trim();
+    if (!input) return alert("Please enter your name.");
+    userName = input;
+
+    markCodeUsed();
+
     document.getElementById("name-section").classList.add("hidden");
     document.getElementById("letter-section").classList.remove("hidden");
 
-    markCodeUsed();
+    letterIndex = 0;
     nextSentence();
 }
 
 // Show next sentence
 function nextSentence() {
-    if (index >= letter.length) return;
+    if (letterIndex >= currentLetter.length) {
+        document.getElementById("downloadPDF").classList.remove("hidden");
+        return;
+    }
 
-    document.getElementById("letterText").innerHTML += letter[index] + "<br><br>";
-    index++;
+    const letterText = document.getElementById("letterText");
+    letterText.innerHTML += currentLetter[letterIndex] + "<br><br>";
+    letterIndex++;
+}
+
+// Generate PDF
+function downloadLetterPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFont("Courier", "normal");
+    doc.setFontSize(14);
+    const text = currentLetter.join("\n\n");
+    doc.text(`Dear ${userName},\n\n` + text, 10, 20);
+    doc.text("\n🎅✨ Your special gift awaits!", 10, 200);
+    doc.save(`Santa_Letter_${userName}.pdf`);
 }
