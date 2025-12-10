@@ -91,7 +91,7 @@ function downloadLetterPDF() {
     });
 
     doc.setFont("Courier", "normal");
-    doc.setFontSize(14);
+    doc.setFontSize(14.2);
 
     const text = currentLetter.join("\n\n");
     doc.text(`Dear ${userName},\n\n` + text, 10, 30); // 10pt margin from left, 30pt from top
@@ -99,5 +99,6 @@ function downloadLetterPDF() {
     doc.text("\n🎅✨ Your special gift awaits!", 10, 550); // adjust vertical if needed
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
