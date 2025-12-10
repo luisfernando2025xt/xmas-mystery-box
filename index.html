@@ -13,9 +13,9 @@
         font-family: "Courier New", monospace;
         display: flex;
         justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
+        align-items: flex-start; /* para que empiece arriba */
+        min-height: 100vh;
+        overflow-y: auto; /* <<< AQUI SE AGREGA EL SCROLL */
     }
 
     /* Snow effect */
@@ -39,6 +39,7 @@
         text-align: center;
         max-width: 600px;
         padding: 20px;
+        margin-top: 40px;
     }
 
     button {
@@ -190,5 +191,3 @@ function createSnow() {
 
 </body>
 </html>
-
-
