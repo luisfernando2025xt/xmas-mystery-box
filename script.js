@@ -87,7 +87,7 @@ function downloadLetterPDF() {
     // 370 × 570 points
     const doc = new jsPDF({
         unit: "pt",        // points
-        format: [100, 570] // width, height in points
+        format: [300, 570] // width, height in points
     });
 
     doc.setFont("Courier", "normal");
@@ -99,6 +99,7 @@ function downloadLetterPDF() {
     doc.text("\n🎅✨ Your special gift awaits!", 10, 550); // adjust vertical if needed
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
