@@ -1,6 +1,5 @@
 {
-  "AB12CD34": { "used": false },
-  "XY98ZT77": { "used": false },
-  "QW11ER22": { "used": false },
-  "PL55MN88": { "used": false }
-} 
+  "ABC123": { "used": false },
+  "XYZ789": { "used": false },
+  "LMN456": { "used": false }
+}
