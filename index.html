@@ -13,9 +13,10 @@
         font-family: "Courier New", monospace;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         height: 100vh;
-        overflow: hidden;
+        overflow-y: auto; /* SCROLL ENABLED */
+        padding-top: 40px; /* space for scrolling */
     }
 
     .snowflake {
@@ -36,6 +37,7 @@
         text-align: center;
         max-width: 600px;
         padding: 20px;
+        margin-bottom: 200px; /* extra scroll space */
     }
 
     button {
@@ -95,6 +97,13 @@
         background: #111;
         border: 1px solid #fff;
         color: #fff;
+    }
+
+    #personalLetter {
+        margin-top: 25px;
+        white-space: pre-line;
+        font-size: 16px;
+        line-height: 22px;
     }
 </style>
 </head>
@@ -195,7 +204,7 @@ function showPersonalLetter() {
 Dear ${name},
 
 Santa has been watching you closer than you imagine.
-He told me something unusual:  
+He told me something unusual:
 "This one carries a spark most adults forget they ever had."
 
 He said your curiosity is rare,
@@ -204,18 +213,20 @@ and that life is about to hand you
 a door only you will know how to open.
 
 When you step through it,
-don’t hesitate—  
+don’t hesitate —
 magic loves bold hearts.
 
-Merry Christmas, ${name}.  
-Something big is coming your way.
+Merry Christmas, ${name}.
+Something big is coming your way, and it has your name on it.
 `;
 
     const letterBox = document.getElementById("personalLetter");
-    letterBox.style.whiteSpace = "pre-line";
-    letterBox.style.marginTop = "30px";
-    letterBox.style.fontSize = "16px";
     letterBox.textContent = letter;
+
+    // Auto scroll down smoothly to reveal the letter
+    setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }, 300);
 }
 </script>
 
