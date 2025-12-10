@@ -29,9 +29,7 @@
     }
 
     @keyframes fall {
-        to {
-            transform: translateY(110vh);
-        }
+        to { transform: translateY(110vh); }
     }
 
     .container {
@@ -48,6 +46,7 @@
         font-size: 18px;
         cursor: pointer;
         transition: 0.3s;
+        margin-top: 10px;
     }
 
     button:hover {
@@ -81,8 +80,21 @@
         100% { transform: translate(0); }
     }
 
-    .shake {
-        animation: shake 0.4s ease-in-out;
+    .shake { animation: shake 0.4s ease-in-out; }
+
+    #nameBox {
+        display: none;
+        margin-top: 20px;
+    }
+
+    input {
+        padding: 10px;
+        font-size: 16px;
+        font-family: "Courier New";
+        width: 80%;
+        background: #111;
+        border: 1px solid #fff;
+        color: #fff;
     }
 </style>
 </head>
@@ -95,6 +107,13 @@
 
     <div id="ascii-box"></div>
     <div id="typing"></div>
+
+    <div id="nameBox">
+        <input id="username" placeholder="Write your name here..." />
+        <button onclick="showPersonalLetter()">Get Your Santa Letter</button>
+    </div>
+
+    <div id="personalLetter"></div>
 </div>
 
 <script>
@@ -108,29 +127,10 @@ const asciiArt = `
           * *       
 `;
 
-// Added 20+ more lines here
 const messages = [
-    "It started quietly… a soft pull in the air, as if something was reaching for you.",
-    "You didn’t notice it at first, but the world had already begun rearranging itself in your favor.",
-    "Sometimes destiny doesn’t knock—it whispers, and tonight it whispered your name.",
-    "Maybe you’ve felt it lately… that strange mix of fear and excitement when something big is coming.",
-    "That feeling wasn’t random. It was alignment. A signal. A shift.",
-    "Every choice you made this year—good or bad—has been secretly compounding into momentum.",
-    "You’re standing at the edge of a chapter that only opens for people who dare to believe again.",
-    "And whether you see it or not, your courage has already unlocked doors ahead of you.",
-    "Someone out there is thinking about you right now, grateful for the version of you they haven’t met yet.",
-    "Life has been holding something behind its back… waiting for you to be ready to receive it.",
-    "You’ve grown in ways you didn’t give yourself credit for, and the universe took note.",
-    "The delays weren’t punishment—they were preparation.",
-    "The setbacks weren’t endings—they were redirections.",
-    "There is a blessing with your name on it, moving toward you with a slow and steady certainty.",
-    "And when it reaches you, everything that once felt heavy will suddenly make sense.",
-    "Your story is not late. It's perfectly timed.",
-    "The magic you think you’re missing is actually gathering speed right now.",
-    "The version of you reading this is stronger than the one who started this year.",
-    "You’re closer than you think, and more capable than you realize.",
-    "Keep opening the boxes life hands you—one of them is the turning point.",
-    "And tonight… this one might just be the first sign."
+    "Something magical whispered your name tonight.",
+    "You weren’t expecting this… but destiny was expecting you.",
+    "Inside every mystery, there is a gift meant only for the brave."
 ];
 
 function typeWriter(text, element, speed = 40) {
@@ -168,6 +168,10 @@ function openBox() {
     artBox.textContent = asciiArt;
 
     createSnow();
+
+    setTimeout(() => {
+        document.getElementById("nameBox").style.display = "block";
+    }, 2500);
 }
 
 function createSnow() {
@@ -182,8 +186,38 @@ function createSnow() {
         setTimeout(() => snow.remove(), 5000);
     }
 }
+
+function showPersonalLetter() {
+    const name = document.getElementById("username").value.trim();
+    if (!name) return;
+
+    const letter = `
+Dear ${name},
+
+Santa has been watching you closer than you imagine.
+He told me something unusual:  
+"This one carries a spark most adults forget they ever had."
+
+He said your curiosity is rare,
+your timing is perfect,
+and that life is about to hand you
+a door only you will know how to open.
+
+When you step through it,
+don’t hesitate—  
+magic loves bold hearts.
+
+Merry Christmas, ${name}.  
+Something big is coming your way.
+`;
+
+    const letterBox = document.getElementById("personalLetter");
+    letterBox.style.whiteSpace = "pre-line";
+    letterBox.style.marginTop = "30px";
+    letterBox.style.fontSize = "16px";
+    letterBox.textContent = letter;
+}
 </script>
 
 </body>
 </html>
-
