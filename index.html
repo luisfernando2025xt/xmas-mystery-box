@@ -18,6 +18,23 @@
         overflow: hidden;
     }
 
+    /* Snow effect */
+    .snowflake {
+        position: fixed;
+        top: -10px;
+        color: white;
+        font-size: 12px;
+        opacity: 0.8;
+        pointer-events: none;
+        animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(110vh);
+        }
+    }
+
     .container {
         text-align: center;
         max-width: 600px;
@@ -56,19 +73,34 @@
         opacity: 0;
         transition: opacity 1.2s ease-in-out;
     }
+
+    /* Shaking animation */
+    @keyframes shake {
+        0% { transform: translate(0); }
+        25% { transform: translate(4px, -4px); }
+        50% { transform: translate(-4px, 4px); }
+        75% { transform: translate(4px, 4px); }
+        100% { transform: translate(0); }
+    }
+
+    .shake {
+        animation: shake 0.4s ease-in-out;
+    }
 </style>
 </head>
 
 <body>
+
 <div class="container">
     <h1>XMAS Mystery Box</h1>
-    <button onclick="openBox()">Open Mystery Box</button>
+    <button onclick="startShake()">Open Mystery Box</button>
 
     <div id="ascii-box"></div>
     <div id="typing"></div>
 </div>
 
 <script>
+// ASCII ART (premium christmas face)
 const asciiArt = `
           * *.  
         *     *  
@@ -79,9 +111,14 @@ const asciiArt = `
           * *       
 `;
 
-const message = "You opened the box… and something magical noticed you.";
+// Random surprise messages
+const messages = [
+    "Something magical whispered your name tonight.",
+    "You weren’t expecting this… but destiny was expecting you.",
+    "Inside every mystery, there is a gift meant only for the brave."
+];
 
-function typeWriter(text, element, speed = 50) {
+function typeWriter(text, element, speed = 40) {
     let i = 0;
     element.style.display = "block";
     const interval = setInterval(() => {
@@ -91,6 +128,16 @@ function typeWriter(text, element, speed = 50) {
     }, speed);
 }
 
+function startShake() {
+    const btn = document.querySelector("button");
+    btn.classList.add("shake");
+
+    setTimeout(() => {
+        btn.classList.remove("shake");
+        openBox();
+    }, 500);
+}
+
 function openBox() {
     const artBox = document.getElementById("ascii-box");
     const typing = document.getElementById("typing");
@@ -98,10 +145,28 @@ function openBox() {
     artBox.style.display = "block";
     setTimeout(() => artBox.style.opacity = 1, 100);
 
-    typeWriter(message, typing, 40);
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    typeWriter(randomMessage, typing, 35);
+
     setTimeout(() => typing.style.opacity = 1, 1500);
 
     artBox.textContent = asciiArt;
+
+    createSnow();
+}
+
+// Snow particles
+function createSnow() {
+    for (let i = 0; i < 40; i++) {
+        const snow = document.createElement("div");
+        snow.classList.add("snowflake");
+        snow.textContent = "*";
+        snow.style.left = Math.random() * 100 + "vw";
+        snow.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.body.appendChild(snow);
+
+        setTimeout(() => snow.remove(), 5000);
+    }
 }
 </script>
 
