@@ -15,8 +15,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        overflow: hidden; /* Scroll disabled at first */
-        transition: background 1s ease-in-out;
+        overflow: hidden;
     }
 
     /* Snow effect */
@@ -87,37 +86,6 @@
     .shake {
         animation: shake 0.4s ease-in-out;
     }
-
-    /* Santa Letter Section */
-    #letter-section {
-        margin-top: 40px;
-        display: none;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-    }
-
-    input {
-        padding: 10px;
-        width: 70%;
-        font-size: 16px;
-        border: 2px solid #fff;
-        background: none;
-        color: white;
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    #letter-output {
-        margin-top: 30px;
-        white-space: pre-line;
-        font-size: 16px;
-        line-height: 20px;
-        padding: 20px;
-        border: 1px solid white;
-        display: none;
-        opacity: 0;
-        transition: opacity 1.2s ease-in-out;
-    }
 </style>
 </head>
 
@@ -129,14 +97,6 @@
 
     <div id="ascii-box"></div>
     <div id="typing"></div>
-
-    <!-- SANTA LETTER BLOCK -->
-    <div id="letter-section">
-        <p>To receive your personalized Santa Letter, type your name:</p>
-        <input id="nameInput" placeholder="Your name..." />
-        <button onclick="generateLetter()">Get Letter</button>
-        <div id="letter-output"></div>
-    </div>
 </div>
 
 <script>
@@ -193,20 +153,6 @@ function openBox() {
     artBox.textContent = asciiArt;
 
     createSnow();
-
-    // REVEAL SANTA LETTER BLOCK
-    setTimeout(() => {
-        document.getElementById("letter-section").style.display = "block";
-
-        setTimeout(() => {
-            document.getElementById("letter-section").style.opacity = 1;
-
-            // Enable scroll now
-            document.body.style.overflow = "auto";
-            document.body.style.height = "auto";
-        }, 200);
-
-    }, 2500);
 }
 
 // Snow particles
@@ -221,39 +167,6 @@ function createSnow() {
 
         setTimeout(() => snow.remove(), 5000);
     }
-}
-
-// Generate Santa Letter
-function generateLetter() {
-    const name = document.getElementById("nameInput").value.trim();
-    if (!name) return;
-
-    const letter = `
-Dear ${name},
-
-Santa here. I’ve been keeping an eye on you this year,
-and let me tell you something…
-
-You’ve got potential that could light up the North Pole.
-
-The elves talk about your energy.
-The reindeer recognize your drive.
-Even Mrs. Claus said:
-“${name} is going to surprise everyone.”
-
-Keep believing.
-Keep creating.
-Your magic is real.
-
-Merry Christmas,
-— Santa 🎅✨
-`;
-
-    const output = document.getElementById("letter-output");
-    output.textContent = letter;
-    output.style.display = "block";
-
-    setTimeout(() => output.style.opacity = 1, 200);
 }
 </script>
 
