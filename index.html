@@ -1,38 +1,81 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Santa Letter Access</title>
+
+<title>Santa Access</title>
+
 <style>
-    body { background:#000; color:#fff; font-family:Courier; text-align:center; padding:40px; }
-    input { font-size:20px; padding:10px; width:250px; text-align:center; }
-    button { padding:10px 20px; font-size:18px; margin-top:20px; cursor:pointer; }
-    #letter { white-space:pre-line; margin-top:30px; font-size:18px; display:none; }
+body {
+    background:#000;
+    color:white;
+    font-family:Courier New;
+    text-align:center;
+    padding:40px;
+}
+input {
+    font-size:20px;
+    padding:10px;
+    text-align:center;
+    width:250px;
+}
+button {
+    padding:10px 20px;
+    font-size:18px;
+    cursor:pointer;
+    margin-top:10px;
+}
+.hidden { display:none; }
 </style>
+
 </head>
+
 <body>
 
-<h2>Enter your code</h2>
-<input id="codeInput" placeholder="XMAS-00001">
-<button onclick="checkCode()">Unlock Letter</button>
+<h1>🎅 Enter Your Access Code</h1>
 
-<pre id="letter"></pre>
+<div id="code-section">
+    <input id="codeInput" placeholder="Enter your code"><br>
+    <button onclick="verifyCode()">Continue</button>
+</div>
+
+<div id="name-section" class="hidden">
+    <h2>Enter your name</h2>
+    <input id="nameInput" placeholder="Your name"><br>
+    <button onclick="startLetter()">Start Letter</button>
+</div>
+
+<div id="letter-section" class="hidden">
+    <p id="letterText"></p>
+    <button onclick="nextSentence()">Continue</button>
+</div>
+
+<script src="script.js"></script>
 
 <script>
-async function checkCode() {
-    const code = document.getElementById("codeInput").value.trim();
-    const res = await fetch("letters.json");
-    const letters = await res.json();
-    const item = letters.find(x => x.code === code);
+const letter = [
+    "Ho ho ho, I’ve been watching you closely this year…",
+    "You have grown more than you realize.",
+    "Life tested you, shaped you, but never broke you.",
+    "And I wrote this letter for a reason…",
+    "Because something big is coming your way."
+];
 
-    if(!item) { alert("Invalid code."); return; }
-    if(item.used) { alert("This code was already used."); return; }
+let index = 0;
 
-    item.used = true;
+function startLetter() {
+    document.getElementById("name-section").classList.add("hidden");
+    document.getElementById("letter-section").classList.remove("hidden");
 
-    document.getElementById("letter").textContent = item.letter;
-    document.getElementById("letter").style.display = "block";
+    markCodeUsed();
+    nextSentence();
+}
+
+function nextSentence() {
+    if (index >= letter.length) return;
+
+    document.getElementById("letterText").innerHTML += letter[index] + "<br><br>";
+    index++;
 }
 </script>
 
