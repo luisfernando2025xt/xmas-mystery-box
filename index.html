@@ -13,12 +13,12 @@
         font-family: "Courier New", monospace;
         display: flex;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         height: 100vh;
-        overflow-y: auto; /* SCROLL ENABLED */
-        padding-top: 40px; /* space for scrolling */
+        overflow: hidden;
     }
 
+    /* Snow effect */
     .snowflake {
         position: fixed;
         top: -10px;
@@ -30,14 +30,15 @@
     }
 
     @keyframes fall {
-        to { transform: translateY(110vh); }
+        to {
+            transform: translateY(110vh);
+        }
     }
 
     .container {
         text-align: center;
         max-width: 600px;
         padding: 20px;
-        margin-bottom: 200px; /* extra scroll space */
     }
 
     button {
@@ -48,7 +49,6 @@
         font-size: 18px;
         cursor: pointer;
         transition: 0.3s;
-        margin-top: 10px;
     }
 
     button:hover {
@@ -74,6 +74,7 @@
         transition: opacity 1.2s ease-in-out;
     }
 
+    /* Shaking animation */
     @keyframes shake {
         0% { transform: translate(0); }
         25% { transform: translate(4px, -4px); }
@@ -82,28 +83,8 @@
         100% { transform: translate(0); }
     }
 
-    .shake { animation: shake 0.4s ease-in-out; }
-
-    #nameBox {
-        display: none;
-        margin-top: 20px;
-    }
-
-    input {
-        padding: 10px;
-        font-size: 16px;
-        font-family: "Courier New";
-        width: 80%;
-        background: #111;
-        border: 1px solid #fff;
-        color: #fff;
-    }
-
-    #personalLetter {
-        margin-top: 25px;
-        white-space: pre-line;
-        font-size: 16px;
-        line-height: 22px;
+    .shake {
+        animation: shake 0.4s ease-in-out;
     }
 </style>
 </head>
@@ -116,16 +97,10 @@
 
     <div id="ascii-box"></div>
     <div id="typing"></div>
-
-    <div id="nameBox">
-        <input id="username" placeholder="Write your name here..." />
-        <button onclick="showPersonalLetter()">Get Your Santa Letter</button>
-    </div>
-
-    <div id="personalLetter"></div>
 </div>
 
 <script>
+// ASCII ART (premium christmas face)
 const asciiArt = `
           * *.  
         *     *  
@@ -136,6 +111,7 @@ const asciiArt = `
           * *       
 `;
 
+// Random surprise messages
 const messages = [
     "Something magical whispered your name tonight.",
     "You weren’t expecting this… but destiny was expecting you.",
@@ -177,12 +153,9 @@ function openBox() {
     artBox.textContent = asciiArt;
 
     createSnow();
-
-    setTimeout(() => {
-        document.getElementById("nameBox").style.display = "block";
-    }, 2500);
 }
 
+// Snow particles
 function createSnow() {
     for (let i = 0; i < 40; i++) {
         const snow = document.createElement("div");
@@ -194,39 +167,6 @@ function createSnow() {
 
         setTimeout(() => snow.remove(), 5000);
     }
-}
-
-function showPersonalLetter() {
-    const name = document.getElementById("username").value.trim();
-    if (!name) return;
-
-    const letter = `
-Dear ${name},
-
-Santa has been watching you closer than you imagine.
-He told me something unusual:
-"This one carries a spark most adults forget they ever had."
-
-He said your curiosity is rare,
-your timing is perfect,
-and that life is about to hand you
-a door only you will know how to open.
-
-When you step through it,
-don’t hesitate —
-magic loves bold hearts.
-
-Merry Christmas, ${name}.
-Something big is coming your way, and it has your name on it.
-`;
-
-    const letterBox = document.getElementById("personalLetter");
-    letterBox.textContent = letter;
-
-    // Auto scroll down smoothly to reveal the letter
-    setTimeout(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    }, 300);
 }
 </script>
 
