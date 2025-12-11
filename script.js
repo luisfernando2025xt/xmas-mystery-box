@@ -101,21 +101,6 @@ function downloadLetterPDF() {
     const bottomMargin = 30;
     const lineHeight = 16;
 
-    // Insert Santa image (premium) - CENTERED
-    const imageWidth = 90;
-    const imageHeight = 90;
-    const imageX = (pageWidth - imageWidth) / 2; // Center horizontally
-    const imageY = 20; // Top padding
-
-    doc.addImage(
-        santaImageURL,
-        "PNG",
-        imageX,
-        imageY,
-        imageWidth,
-        imageHeight
-    );
-
     // Main letter
     const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
     const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
@@ -125,13 +110,29 @@ function downloadLetterPDF() {
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
     const bottomHeight = bottomLines.length * lineHeight;
 
+    // Image dimensions
+    const imageWidth = 90;
+    const imageHeight = 90;
+
     // Draw main text
-    let cursorY = marginTop + imageHeight + 10; // shift down to avoid overlapping with Santa
+    let cursorY = marginTop;
     for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break;
+        if (cursorY + lineHeight > pageHeight - bottomHeight - imageHeight - bottomMargin - 10) break; // leave space for image
         doc.text(lines[i], marginX, cursorY);
         cursorY += lineHeight;
     }
+
+    // Draw Santa image centered above bottom text
+    const imageX = (pageWidth - imageWidth) / 2;
+    const imageY = pageHeight - bottomMargin - bottomHeight - imageHeight - 5; // 5pt gap above text
+    doc.addImage(
+        santaImageURL,
+        "PNG",
+        imageX,
+        imageY,
+        imageWidth,
+        imageHeight
+    );
 
     // Draw bottom text
     let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
@@ -142,3 +143,4 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
