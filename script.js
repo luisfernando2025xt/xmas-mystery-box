@@ -108,26 +108,32 @@ function downloadLetterPDF() {
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX*2);
     const bottomHeight = bottomLines.length * lineHeight;
 
-    // Dibuja texto principal, dejando espacio para la frase final
+    // Firma de Santa
+    const signature = "— Santa Claus 🎄";
+    doc.setFont("Courier", "italic");
+    doc.setFontSize(16);
+    const signatureWidth = doc.getTextWidth(signature);
+
+    // Dibuja texto principal, dejando espacio para la frase final y la firma
     let cursorY = marginTop;
     for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break; // no sobrepasa
+        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin - 30) break; // espacio extra para firma
         doc.text(lines[i], marginX, cursorY);
         cursorY += lineHeight;
     }
 
     // Dibuja frase final pegada al fondo
-    let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
+    let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight - 20; // deja espacio para firma
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
         bottomY += lineHeight;
     });
 
+    // Dibuja firma centrada debajo de la frase final
+    doc.text(signature, (pageWidth - signatureWidth) / 2, pageHeight - bottomMargin);
+
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
-
-
-
 
 
 
