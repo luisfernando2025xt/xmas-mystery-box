@@ -95,7 +95,7 @@ function downloadLetterPDF() {
     const marginX = 20;
     const marginTop = 30;
     const pageWidth = 370;
-    const pageHeight = 570;
+    const pageHeight = doc.internal.pageSize.getHeight();
     const bottomMargin = 30;
     const lineHeight = 16;
 
@@ -125,5 +125,6 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
