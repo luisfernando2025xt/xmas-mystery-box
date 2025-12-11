@@ -1,60 +1,37 @@
-{
-  "ABC123": [
-    "Ho ho ho, I’ve been watching you closely this year…",
-    "You have grown more than you realize.",
-    "Life tested you, shaped you, but never broke you.",
-    "And I wrote this letter for a reason…",
-    "Because something big is coming your way.",
-    "Remember, the universe is aligning for you.",
-    "Keep your heart open and your spirit strong.",
+{ 
+  "ABC123":
+  [ "Ho ho ho, I’ve been watching you closely this year…",
+    "You have grown more than you realize.", 
+    "Life tested you, shaped you, but never broke you.", 
+    "And I wrote this letter for a reason…", 
+    "Because something big is coming your way." 
+  ], 
+  "XYZ789":
+  [ "Merry Christmas! This year has been full of surprises…", 
+    "You’ve handled challenges with courage and heart.",
+    "And now, a special gift is coming just for you.", 
+    "Remember, magic finds those who believe.", 
+    "Keep your heart open, the best is yet to come."
+  ], 
+  "LMN456": [ "Seasons greetings! Your persistence has not gone unnoticed.", 
+  "Every small victory you achieved has compounded into something great.", 
+    "The universe is aligning for you in ways you can’t yet see.",
+    "Soon you’ll receive something meant only for you.", 
+    "This letter is the first hint of what’s to come." 
+  ], 
+  "PL55MN88":
+  [ "Happy Holidays! Your dedication this year was remarkable.",
+    "The effort you’ve put in is about to pay off in unexpected ways.", 
+    "Magic and opportunity are on their way.",
+    "Stay ready, because surprises will arrive soon.", 
+    "Your Santa letter holds the first clue." 
+  ], 
+  "QW11ER22":
+  [ "Greetings! The universe has noticed your hard work.",
     "Challenges were stepping stones, not obstacles.",
     "A special gift is on its path to you.",
-    "Believe in yourself, magic finds those who do.",
-    "Your patience and effort will be rewarded soon.",
-    "This letter marks the beginning of something extraordinary."
-  ],
-  "XYZ789": [
-    "Merry Christmas! This year has been full of surprises…",
-    "You’ve handled challenges with courage and heart.",
-    "And now, a special gift is coming just for you.",
-    "Remember, magic finds those who believe.",
-    "Keep your heart open, the best is yet to come.",
-    "Your dedication has not gone unnoticed.",
-    "Every small victory has built a path to greatness.",
-    "The universe is preparing something unique for you.",
-    "Stay patient, the reward is near.",
-    "Your efforts are shaping an amazing future.",
-    "This letter is a glimpse of the surprises ahead.",
-    "Embrace the magic, the best is yet to come."
-  ],
-  "LMN456": [
-    "Seasons greetings! Your persistence has not gone unnoticed.",
-    "Every small victory you achieved has compounded into something great.",
-    "The universe is aligning for you in ways you can’t yet see.",
-    "Soon you’ll receive something meant only for you.",
-    "This letter is the first hint of what’s to come.",
-    "Your focus and resilience have been remarkable.",
-    "Keep believing in your dreams, they are taking shape.",
-    "Challenges were lessons, not obstacles.",
-    "A special moment is approaching just for you.",
-    "Your dedication is guiding you to new opportunities.",
-    "Magic and joy are flowing towards you.",
-    "This is only the beginning of your incredible journey."
-  ],
-  "PL55MN88": [
-    "Happy Holidays! Your dedication this year was remarkable.",
-    "The effort you’ve put in is about to pay off in unexpected ways.",
-    "Magic and opportunity are on their way.",
-    "Stay ready, because surprises will arrive soon.",
-    "Your Santa letter holds the first clue.",
-    "Believe in the unseen, and miracles will appear.",
-    "Your perseverance is inspiring everyone around you.",
-    "The universe is sending gifts aligned with your dreams.",
-    "Keep your heart open to joy and wonder.",
-    "A special opportunity is heading directly to you.",
-    "This letter is the key to unlocking your upcoming surprises.",
-    "Magic is real, and it has your name on it."
-  ]
+    "Keep believing; your patience will be rewarded.", 
+    "This letter is just the beginning of what’s to come." ] 
 }
 
 
