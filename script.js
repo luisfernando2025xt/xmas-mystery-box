@@ -104,7 +104,7 @@ function downloadLetterPDF() {
     const lines = doc.splitTextToSize(fullText, pageWidth - marginX*2);
 
     // Frase final
-    const bottomText = "Your special gift awaits!";
+    const bottomText = "ok";
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX*2);
     const bottomHeight = bottomLines.length * lineHeight;
 
@@ -125,6 +125,7 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
