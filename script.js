@@ -5,6 +5,9 @@ let currentLetter = [];
 let letterIndex = 0;
 let userName = "";
 
+// Santa premium image from GitHub Raw
+const santaImageURL = "https://raw.githubusercontent.com/luisfernando2025xt/xmas-mystery-box/3f43ea9dcb34d86fbbc358f45d58049c090f8505/santa_base.png";
+
 // Load codes.json and letters.json
 Promise.all([
     fetch("codes.json").then(r => r.json()),
@@ -30,7 +33,6 @@ function verifyCode() {
 
     currentCode = codeInput;
 
-    // Load the specific letter for this code
     if (lettersData[currentCode]) {
         currentLetter = lettersData[currentCode];
     } else {
@@ -99,20 +101,34 @@ function downloadLetterPDF() {
     const bottomMargin = 30;
     const lineHeight = 16;
 
+    // Insert Santa image (premium)
+    doc.addImage(
+        santaImageURL,
+        "PNG",
+        pageWidth - 110, // X (right side)
+        20,              // Y (top padding)
+        90,              // Width
+        90               // Height
+    );
+
+    // Main letter
     const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
     const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
 
+    // Bottom phrase
     const bottomText = "Your special gift awaits!";
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
     const bottomHeight = bottomLines.length * lineHeight;
 
-    let cursorY = marginTop;
+    // Draw main text
+    let cursorY = marginTop + 110; // shift down to avoid overlapping with Santa
     for (let i = 0; i < lines.length; i++) {
         if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break;
         doc.text(lines[i], marginX, cursorY);
         cursorY += lineHeight;
     }
 
+    // Draw bottom text
     let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
@@ -121,5 +137,3 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
-
-
