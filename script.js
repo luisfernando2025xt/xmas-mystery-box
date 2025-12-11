@@ -88,7 +88,7 @@ function downloadLetterPDF() {
 
     const doc = new jsPDF({
         unit: "pt",
-        format: [370, 700]
+        format: [370, 800]
     });
 
     doc.setFont("Courier", "normal");
@@ -103,7 +103,7 @@ function downloadLetterPDF() {
 
     // Image dimensions
     const imageWidth = 90;
-    const imageHeight = 90;
+    const imageHeight = 120;
 
     // === Draw Santa image at the TOP, CENTERED ===
     const imageX = (pageWidth - imageWidth) / 2;
@@ -118,8 +118,8 @@ function downloadLetterPDF() {
     );
 
     // === Draw Title below Santa ===
-    const title = "🎅 Santa's Letter 🎄";
-    const titleFontSize = 16;
+    const title = "Santa's Letter";
+    const titleFontSize = 18;
     doc.setFontSize(titleFontSize);
     const titleY = imageY + imageHeight + 20; // 20pt space below image
     doc.text(title, pageWidth / 2, titleY, { align: "center" });
@@ -148,6 +148,7 @@ function downloadLetterPDF() {
     // Save PDF
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
