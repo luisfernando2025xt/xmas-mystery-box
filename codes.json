@@ -15,7 +15,7 @@
   "ZX34CV56": { "used": false },
   "QW78ER90": { "used": false },
   "TY12UI34": { "used": false },
-  "OP56AS78": { "used": false },
+  "OP56AS78": { "used": false }
   "DF90GH12": { "used": false },
   "JK34LM56": { "used": false },
   "CV78BN90": { "used": false },
@@ -33,7 +33,7 @@
   "CV56BN78": { "used": false },
   "RE90TY12": { "used": false },
   "UI34OP56": { "used": false },
-  "AS78DF90": { "used": false },
+  "AS78DF90": { "used": false }
   "GH12JK34": { "used": false },
   "LM56ZX78": { "used": false },
   "CV90BN12": { "used": false },
@@ -46,7 +46,7 @@
   "RE78TY90": { "used": false },
   "UI12OP34": { "used": false },
   "AS56DF78": { "used": false },
-  "GH90JK12": { "used": false },
+  "GH90JK12": { "used": false }
   "LM12ZX34": { "used": false },
   "CV56BN78": { "used": false },
   "QW90ER12": { "used": false },
@@ -61,7 +61,7 @@
   "GH56JK78": { "used": false },
   "LM90ZX12": { "used": false },
   "CV34BN56": { "used": false },
-  "QW78ER90": { "used": false },
+  "QW78ER90": { "used": false }
   "TY12UI34": { "used": false },
   "OP56AS78": { "used": false },
   "DF90GH12": { "used": false },
@@ -76,23 +76,5 @@
   "QW56ER78": { "used": false },
   "TY90UI12": { "used": false },
   "OP34AS56": { "used": false },
-  "DF78GH90": { "used": false },
-  "JK12LM34": { "used": false },
-  "CV56BN78": { "used": false },
-  "RE90TY12": { "used": false },
-  "UI34OP56": { "used": false },
-  "AS78DF90": { "used": false },
-  "GH12JK34": { "used": false },
-  "LM56ZX78": { "used": false },
-  "CV90BN12": { "used": false },
-  "QW34ER56": { "used": false },
-  "TY78UI90": { "used": false },
-  "OP12AS34": { "used": false },
-  "DF56GH78": { "used": false },
-  "JK90LM12": { "used": false },
-  "CV34BN56": { "used": false },
-  "RE78TY90": { "used": false },
-  "UI12OP34": { "used": false },
-  "AS56DF78": { "used": false },
-  "GH90JK12": { "used": false }
+  "DF78GH90": { "used": false }
 }
