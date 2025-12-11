@@ -90,7 +90,7 @@ function downloadLetterPDF() {
     });
 
     doc.setFont("Courier", "normal");
-    doc.setFontSize(14.2);
+    doc.setFontSize(14);
 
     const marginX = 20;    // margen izquierdo y derecho
     const marginTop = 30;  // margen superior
