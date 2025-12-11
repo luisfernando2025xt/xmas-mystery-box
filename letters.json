@@ -1,54 +1,37 @@
-{ 
-  "ABC123":
-  [ "Ho ho ho, I’ve been watching you closely this year…",
-    "You have grown more than you realize.", 
-    "Life tested you, shaped you, but never broke you.", 
-    "And I wrote this letter for a reason…", 
-    "Because something big is coming your way." 
-  ], 
-  "XYZ789":
-  [ "Merry Christmas! This year has been full of surprises…", 
+{
+  "ABC123": [
+    "Ho ho ho, I’ve been watching you closely this year…",
+    "You have grown more than you realize.",
+    "Life tested you, shaped you, but never broke you.",
+    "And I wrote this letter for a reason…",
+    "Because something big is coming your way."
+  ],
+  "XYZ789": [
+    "Merry Christmas! This year has been full of surprises…",
     "You’ve handled challenges with courage and heart.",
-    "And now, a special gift is coming just for you.", 
-    "Remember, magic finds those who believe.", 
+    "And now, a special gift is coming just for you.",
+    "Remember, magic finds those who believe.",
     "Keep your heart open, the best is yet to come."
-  ], 
-  "LMN456": [ "Seasons greetings! Your persistence has not gone unnoticed.", 
-  "Every small victory you achieved has compounded into something great.", 
+  ],
+  "LMN456": [
+    "Seasons greetings! Your persistence has not gone unnoticed.",
+    "Every small victory you achieved has compounded into something great.",
     "The universe is aligning for you in ways you can’t yet see.",
-    "Soon you’ll receive something meant only for you.", 
-    "This letter is the first hint of what’s to come." 
-  ], 
-  "PL55MN88":
-  [ "Happy Holidays! Your dedication this year was remarkable.",
-    "The effort you’ve put in is about to pay off in unexpected ways.", 
+    "Soon you’ll receive something meant only for you.",
+    "This letter is the first hint of what’s to come."
+  ],
+  "PL55MN88": [
+    "Happy Holidays! Your dedication this year was remarkable.",
+    "The effort you’ve put in is about to pay off in unexpected ways.",
     "Magic and opportunity are on their way.",
-    "Stay ready, because surprises will arrive soon.", 
-    "Your Santa letter holds the first clue." 
-  ], 
-  "QW11ER22":
-  [ "Greetings! The universe has noticed your hard work.",
+    "Stay ready, because surprises will arrive soon.",
+    "Your Santa letter holds the first clue."
+  ],
+  "QW11ER22": [
+    "Greetings! The universe has noticed your hard work.",
     "Challenges were stepping stones, not obstacles.",
     "A special gift is on its path to you.",
-    "Keep believing; your patience will be rewarded.", 
-    "This letter is just the beginning of what’s to come." ] 
+    "Keep believing; your patience will be rewarded.",
+    "This letter is just the beginning of what’s to come."
+  ]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
