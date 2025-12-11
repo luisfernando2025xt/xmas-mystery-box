@@ -101,14 +101,19 @@ function downloadLetterPDF() {
     const bottomMargin = 30;
     const lineHeight = 16;
 
-    // Insert Santa image (premium)
+    // Insert Santa image (premium) - CENTERED
+    const imageWidth = 90;
+    const imageHeight = 90;
+    const imageX = (pageWidth - imageWidth) / 2; // Center horizontally
+    const imageY = 20; // Top padding
+
     doc.addImage(
         santaImageURL,
         "PNG",
-        pageWidth - 110, // X (right side)
-        20,              // Y (top padding)
-        90,              // Width
-        90               // Height
+        imageX,
+        imageY,
+        imageWidth,
+        imageHeight
     );
 
     // Main letter
@@ -121,7 +126,7 @@ function downloadLetterPDF() {
     const bottomHeight = bottomLines.length * lineHeight;
 
     // Draw main text
-    let cursorY = marginTop + 110; // shift down to avoid overlapping with Santa
+    let cursorY = marginTop + imageHeight + 10; // shift down to avoid overlapping with Santa
     for (let i = 0; i < lines.length; i++) {
         if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break;
         doc.text(lines[i], marginX, cursorY);
@@ -137,5 +142,3 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
-
-
