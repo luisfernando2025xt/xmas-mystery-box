@@ -88,7 +88,7 @@ function downloadLetterPDF() {
 
     const doc = new jsPDF({
         unit: "pt",
-        format: [370, 1000]
+        format: [370, 800]
     });
 
     doc.setFont("Courier", "normal");
@@ -148,6 +148,7 @@ function downloadLetterPDF() {
     // Save PDF
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
