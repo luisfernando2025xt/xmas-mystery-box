@@ -6,7 +6,7 @@ let letterIndex = 0;
 let userName = "";
 
 // Santa premium image from GitHub Raw
-const santaImageURL = "https://raw.githubusercontent.com/luisfernando2025xt/xmas-mystery-box/3f43ea9dcb34d86fbbc358f45d58049c090f8505/santa.png";
+const santaImageURL = "https://raw.githubusercontent.com/luisfernando2025xt/xmas-mystery-box/refs/heads/main/santa.png";
 
 // Load codes.json and letters.json
 Promise.all([
@@ -137,4 +137,5 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
