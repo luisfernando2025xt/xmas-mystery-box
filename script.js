@@ -90,31 +90,33 @@ function downloadLetterPDF() {
     });
 
     doc.setFont("Courier", "normal");
-    doc.setFontSize(14);
+    doc.setFontSize(14.2);
 
-    const marginX = 20;    // margen izquierdo y derecho
-    const marginTop = 30;  // margen superior
+    const marginX = 20;
+    const marginTop = 30;
     const pageWidth = 370;
     const pageHeight = 570;
-    const usableWidth = pageWidth - marginX*2; // ancho disponible para texto
-    const bottomMargin = 30; // distancia del texto final al fondo
+    const bottomMargin = 30;
+    const lineHeight = 16;
 
     // Carta principal
     const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
-    const lines = doc.splitTextToSize(fullText, usableWidth);
+    const lines = doc.splitTextToSize(fullText, pageWidth - marginX*2);
 
-    // Dibuja el texto línea por línea
-    let cursorY = marginTop;
-    const lineHeight = 16;
-    lines.forEach(line => {
-        doc.text(line, marginX, cursorY);
-        cursorY += lineHeight;
-    });
-
-    // Texto final, pegado al fondo
+    // Frase final
     const bottomText = "🎅✨ Your special gift awaits!";
-    const bottomLines = doc.splitTextToSize(bottomText, usableWidth);
+    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX*2);
+    const bottomHeight = bottomLines.length * lineHeight;
 
+    // Dibuja texto principal, dejando espacio para la frase final
+    let cursorY = marginTop;
+    for (let i = 0; i < lines.length; i++) {
+        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break; // no sobrepasa
+        doc.text(lines[i], marginX, cursorY);
+        cursorY += lineHeight;
+    }
+
+    // Dibuja frase final pegada al fondo
     let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
@@ -123,6 +125,7 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
