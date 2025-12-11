@@ -92,10 +92,11 @@ function downloadLetterPDF() {
     doc.setFont("Courier", "normal");
     doc.setFontSize(14);
 
-    const marginX = 40;    // margen izquierdo
-    const marginTop = 50;  // margen superior
+    const marginX = 20;    // margen izquierdo y derecho
+    const marginTop = 30;  // margen superior
     const pageWidth = 370;
-    const usableWidth = pageWidth - marginX*2; // ancho real disponible para texto
+    const pageHeight = 570;
+    const usableWidth = pageWidth - marginX*2; // ancho disponible para texto
 
     const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
 
@@ -103,16 +104,28 @@ function downloadLetterPDF() {
     const lines = doc.splitTextToSize(fullText, usableWidth);
 
     // Dibuja el texto
-    doc.text(lines, marginX, marginTop);
+    let cursorY = marginTop;
+    const lineHeight = 16; // altura de cada línea
+    lines.forEach(line => {
+        if (cursorY + lineHeight > pageHeight - 40) return; // no exceder la página
+        doc.text(line, marginX, cursorY);
+        cursorY += lineHeight;
+    });
 
-    // Línea final cerca del fondo
+    // Texto final (se coloca justo después del texto anterior, respetando la página)
     const bottomText = "🎅✨ Your special gift awaits!";
-    const bottomY = 550;
     const bottomLines = doc.splitTextToSize(bottomText, usableWidth);
-    doc.text(bottomLines, marginX, bottomY);
+
+    bottomLines.forEach(line => {
+        if (cursorY + lineHeight > pageHeight - 10) return; // evitar cortar fuera
+        doc.text(line, marginX, cursorY);
+        cursorY += lineHeight;
+    });
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
+
 
 
 
