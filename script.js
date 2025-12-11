@@ -99,29 +99,33 @@ function downloadLetterPDF() {
     const bottomMargin = 30;
     const lineHeight = 16;
 
-    // Carta principal
-    const fullText = Dear ${userName},\n\n + currentLetter.join("\n\n");
-    const lines = doc.splitTextToSize(fullText, pageWidth - marginX*2);
+    // Carta principal (CORREGIDO)
+    const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
+    const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
 
     // Frase final
     const bottomText = "Your special gift awaits!";
-    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX*2);
+    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
     const bottomHeight = bottomLines.length * lineHeight;
 
-    // Dibuja texto principal, dejando espacio para la frase final
+    // Dibuja texto principal
     let cursorY = marginTop;
     for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break; // no sobrepasa
+        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break;
         doc.text(lines[i], marginX, cursorY);
         cursorY += lineHeight;
     }
 
-    // Dibuja frase final pegada al fondo
+    // Dibuja frase final
     let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
         bottomY += lineHeight;
     });
 
+    doc.save(`Santa_Letter_${userName}.pdf`);
+}
+
     doc.save(Santa_Letter_${userName}.pdf);
 }
+
