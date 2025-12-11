@@ -92,8 +92,8 @@ function downloadLetterPDF() {
     doc.setFont("Courier", "normal");
     doc.setFontSize(14);
 
-    const marginX = 20;    // margen izquierdo
-    const marginTop = 40;  // margen superior
+    const marginX = 40;    // margen izquierdo
+    const marginTop = 50;  // margen superior
     const pageWidth = 370;
     const usableWidth = pageWidth - marginX*2; // ancho real disponible para texto
 
@@ -113,6 +113,7 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
