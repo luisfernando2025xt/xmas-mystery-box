@@ -102,7 +102,7 @@ function downloadLetterPDF() {
     const lineHeight = 16;
 
     // Image dimensions
-    const imageWidth = 1335;
+    const imageWidth = 135;
     const imageHeight = 180;
 
     // === Draw Santa image at the TOP, CENTERED ===
@@ -148,6 +148,7 @@ function downloadLetterPDF() {
     // Save PDF
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
 
