@@ -105,7 +105,7 @@ function downloadLetterPDF() {
     const imageWidth = 90;
     const imageHeight = 90;
 
-    // Draw Santa image at top, centered
+    // === Draw Santa image at the TOP, CENTERED ===
     const imageX = (pageWidth - imageWidth) / 2;
     const imageY = marginTop;
     doc.addImage(
@@ -117,41 +117,37 @@ function downloadLetterPDF() {
         imageHeight
     );
 
-    // Title "Santa's Letter"
+    // === Draw Title below Santa ===
     const title = "🎅 Santa's Letter 🎄";
     const titleFontSize = 16;
     doc.setFontSize(titleFontSize);
-    const titleY = imageY + imageHeight + 20; // space below image
+    const titleY = imageY + imageHeight + 20; // 20pt space below image
     doc.text(title, pageWidth / 2, titleY, { align: "center" });
 
-    // Reset font for main text
+    // === Main Letter Text ===
     doc.setFontSize(14.2);
-
-    // Main letter text
     const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
     const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
 
-    // Bottom phrase
-    const bottomText = "Your special gift awaits!";
-    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
-    const bottomHeight = bottomLines.length * lineHeight;
-
-    // Draw main text starting below the title
-    let cursorY = titleY + 20;
+    let cursorY = titleY + 20; // Start below title
     for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break;
+        if (cursorY + lineHeight > pageHeight - bottomMargin - lineHeight) break;
         doc.text(lines[i], marginX, cursorY);
         cursorY += lineHeight;
     }
 
-    // Draw bottom text
+    // === Bottom phrase ===
+    const bottomText = "Your special gift awaits!";
+    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
     let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
         bottomY += lineHeight;
     });
 
+    // Save PDF
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
 
