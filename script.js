@@ -101,30 +101,13 @@ function downloadLetterPDF() {
     const bottomMargin = 30;
     const lineHeight = 16;
 
-    // Main letter
-    const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
-    const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
-
-    // Bottom phrase
-    const bottomText = "Your special gift awaits!";
-    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
-    const bottomHeight = bottomLines.length * lineHeight;
-
     // Image dimensions
     const imageWidth = 90;
     const imageHeight = 90;
 
-    // Draw main text
-    let cursorY = marginTop;
-    for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageHeight - bottomHeight - imageHeight - bottomMargin - 10) break; // leave space for image
-        doc.text(lines[i], marginX, cursorY);
-        cursorY += lineHeight;
-    }
-
-    // Draw Santa image centered above bottom text
+    // Draw Santa image at top, centered
     const imageX = (pageWidth - imageWidth) / 2;
-    const imageY = pageHeight - bottomMargin - bottomHeight - imageHeight - 5; // 5pt gap above text
+    const imageY = marginTop;
     doc.addImage(
         santaImageURL,
         "PNG",
@@ -133,6 +116,33 @@ function downloadLetterPDF() {
         imageWidth,
         imageHeight
     );
+
+    // Title "Santa's Letter"
+    const title = "🎅 Santa's Letter 🎄";
+    const titleFontSize = 16;
+    doc.setFontSize(titleFontSize);
+    const titleY = imageY + imageHeight + 20; // space below image
+    doc.text(title, pageWidth / 2, titleY, { align: "center" });
+
+    // Reset font for main text
+    doc.setFontSize(14.2);
+
+    // Main letter text
+    const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
+    const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
+
+    // Bottom phrase
+    const bottomText = "Your special gift awaits!";
+    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
+    const bottomHeight = bottomLines.length * lineHeight;
+
+    // Draw main text starting below the title
+    let cursorY = titleY + 20;
+    for (let i = 0; i < lines.length; i++) {
+        if (cursorY + lineHeight > pageHeight - bottomHeight - bottomMargin) break;
+        doc.text(lines[i], marginX, cursorY);
+        cursorY += lineHeight;
+    }
 
     // Draw bottom text
     let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
@@ -143,4 +153,5 @@ function downloadLetterPDF() {
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
 
