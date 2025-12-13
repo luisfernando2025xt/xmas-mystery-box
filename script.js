@@ -86,26 +86,36 @@ function nextSentence() {
 function downloadLetterPDF() {
     const { jsPDF } = window.jspdf;
 
-    const doc = new jsPDF({
-        unit: "pt",
-        format: [370, 800]
-    });
-
-    doc.setFont("Courier", "normal");
-    doc.setFontSize(14.2);
-
     const marginX = 20;
     const marginTop = 30;
-    const pageWidth = 370;
-    const pageHeight = doc.internal.pageSize.getHeight();
     const bottomMargin = 30;
     const lineHeight = 16;
-
-    // Image dimensions
     const imageWidth = 135;
     const imageHeight = 180;
+    const titleFontSize = 24;
+    const pageWidth = 370;
 
-    // === Draw Santa image at the TOP, CENTERED ===
+    // Texto principal
+    const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
+
+    // Creamos un doc temporal para calcular altura del texto
+    const tempDoc = new jsPDF({ unit: "pt", format: [pageWidth, 1000] });
+    tempDoc.setFont("Courier", "normal");
+    tempDoc.setFontSize(14.2);
+    const lines = tempDoc.splitTextToSize(fullText, pageWidth - marginX * 2);
+    const textHeight = lines.length * lineHeight;
+
+    // Altura total del PDF
+    const pageHeight = marginTop + imageHeight + 20 + titleFontSize + 20 + textHeight + 20 + lineHeight + bottomMargin;
+
+    // Creamos el PDF final con altura dinámica
+    const doc = new jsPDF({
+        unit: "pt",
+        format: [pageWidth, pageHeight]
+    });
+    doc.setFont("Courier", "normal");
+
+    // === Dibujar imagen de Santa al tope, centrada ===
     const imageX = (pageWidth - imageWidth) / 2;
     const imageY = marginTop;
     doc.addImage(
@@ -117,37 +127,34 @@ function downloadLetterPDF() {
         imageHeight
     );
 
-    // === Draw Title below Santa ===
+    // === Dibujar título debajo de la imagen ===
     const title = "Santa's Letter";
-    const titleFontSize = 24;
     doc.setFontSize(titleFontSize);
-    const titleY = imageY + imageHeight + 20; // 20pt space below image
+    const titleY = imageY + imageHeight + 20;
     doc.text(title, pageWidth / 2, titleY, { align: "center" });
 
-    // === Main Letter Text ===
+    // === Dibujar texto principal ===
     doc.setFontSize(14.2);
-    const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
-    const lines = doc.splitTextToSize(fullText, pageWidth - marginX * 2);
-
-    let cursorY = titleY + 20; // Start below title
+    let cursorY = titleY + 20;
     for (let i = 0; i < lines.length; i++) {
-        if (cursorY + lineHeight > pageHeight - bottomMargin - lineHeight) break;
         doc.text(lines[i], marginX, cursorY);
         cursorY += lineHeight;
     }
 
-    // === Bottom phrase ===
+    // === Dibujar frase final al fondo ===
     const bottomText = "Your special gift awaits!";
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
-    let bottomY = pageHeight - bottomMargin - (bottomLines.length - 1) * lineHeight;
+    let bottomY = cursorY + 20; // espacio desde el texto principal
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
         bottomY += lineHeight;
     });
 
-    // Save PDF
+    // === Guardar PDF ===
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
+
 
 
 
