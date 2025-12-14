@@ -1,0 +1,44 @@
+{
+  "EN": {
+    "enterCode": "🎅 Enter Your Access Code",
+    "codePlaceholder": "Enter your code",
+    "continueButton": "Continue",
+    "nameHeading": "Enter your name",
+    "namePlaceholder": "Your name",
+    "startLetterButton": "Start Letter",
+    "invalidCode": "Invalid code",
+    "codeUsed": "This code has already been used.",
+    "downloadPDF": "Download PDF",
+    "pdfTitle": "Santa's Letter",
+    "pdfGreeting": "Dear",
+    "pdfEnding": "Your special gift awaits!"
+  },
+  "ES": {
+    "enterCode": "🎅 Ingresa tu código de acceso",
+    "codePlaceholder": "Introduce tu código",
+    "continueButton": "Continuar",
+    "nameHeading": "Ingresa tu nombre",
+    "namePlaceholder": "Tu nombre",
+    "startLetterButton": "Comenzar carta",
+    "invalidCode": "Código inválido",
+    "codeUsed": "Este código ya ha sido usado.",
+    "downloadPDF": "Descargar PDF",
+    "pdfTitle": "Carta de Santa",
+    "pdfGreeting": "Querido/a",
+    "pdfEnding": "¡Tu regalo especial te espera!"
+  },
+  "DE": {
+    "enterCode": "🎅 Geben Sie Ihren Zugangscode ein",
+    "codePlaceholder": "Geben Sie Ihren Code ein",
+    "continueButton": "Weiter",
+    "nameHeading": "Geben Sie Ihren Namen ein",
+    "namePlaceholder": "Ihr Name",
+    "startLetterButton": "Brief starten",
+    "invalidCode": "Ungültiger Code",
+    "codeUsed": "Dieser Code wurde bereits verwendet.",
+    "downloadPDF": "PDF herunterladen",
+    "pdfTitle": "Brief vom Weihnachtsmann",
+    "pdfGreeting": "Lieber",
+    "pdfEnding": "Dein besonderes Geschenk wartet!"
+  }
+}
