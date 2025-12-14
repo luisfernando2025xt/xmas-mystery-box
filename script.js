@@ -4,6 +4,12 @@ let currentCode = "";
 let currentLetter = [];
 let letterIndex = 0;
 let userName = "";
+// Detect TikTok in-app browser
+function isTikTokBrowser() {
+    return /TikTok/i.test(navigator.userAgent);
+}
+
+
 
 // Santa premium image from GitHub Raw
 const santaImageURL = "https://raw.githubusercontent.com/luisfernando2025xt/xmas-mystery-box/refs/heads/main/santa.png";
@@ -84,6 +90,18 @@ function nextSentence() {
 
 // Generate PDF
 function downloadLetterPDF() {
+
+    // 🚨 TikTok in-app browser protection
+    if (isTikTokBrowser()) {
+        alert(
+            "To download your Santa Letter:\n\n" +
+            "1️⃣ Tap the three dots ⋯\n" +
+            "2️⃣ Select “Open in browser”\n" +
+            "3️⃣ Download your letter instantly 🎄"
+        );
+        return;
+    }
+
     const { jsPDF } = window.jspdf;
 
     const marginX = 20;
@@ -95,64 +113,56 @@ function downloadLetterPDF() {
     const titleFontSize = 24;
     const pageWidth = 370;
 
-    // Texto principal
     const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
 
-    // Creamos un doc temporal para calcular altura del texto
     const tempDoc = new jsPDF({ unit: "pt", format: [pageWidth, 1000] });
     tempDoc.setFont("Courier", "normal");
     tempDoc.setFontSize(14.2);
     const lines = tempDoc.splitTextToSize(fullText, pageWidth - marginX * 2);
     const textHeight = lines.length * lineHeight;
 
-    // Altura total del PDF
-    const pageHeight = marginTop + imageHeight + 20 + titleFontSize + 20 + textHeight + 20 + lineHeight + bottomMargin;
+    const pageHeight =
+        marginTop +
+        imageHeight +
+        20 +
+        titleFontSize +
+        20 +
+        textHeight +
+        20 +
+        lineHeight +
+        bottomMargin;
 
-    // Creamos el PDF final con altura dinámica
     const doc = new jsPDF({
         unit: "pt",
         format: [pageWidth, pageHeight]
     });
+
     doc.setFont("Courier", "normal");
 
-    // === Dibujar imagen de Santa al tope, centrada ===
     const imageX = (pageWidth - imageWidth) / 2;
     const imageY = marginTop;
-    doc.addImage(
-        santaImageURL,
-        "PNG",
-        imageX,
-        imageY,
-        imageWidth,
-        imageHeight
-    );
+    doc.addImage(santaImageURL, "PNG", imageX, imageY, imageWidth, imageHeight);
 
-    // === Dibujar título debajo de la imagen ===
     const title = "Santa's Letter";
     doc.setFontSize(titleFontSize);
     const titleY = imageY + imageHeight + 20;
     doc.text(title, pageWidth / 2, titleY, { align: "center" });
 
-    // === Dibujar texto principal ===
     doc.setFontSize(14.2);
     let cursorY = titleY + 20;
-    for (let i = 0; i < lines.length; i++) {
-        doc.text(lines[i], marginX, cursorY);
+    lines.forEach(line => {
+        doc.text(line, marginX, cursorY);
         cursorY += lineHeight;
-    }
-
-    // === Dibujar frase final al fondo ===
-    const bottomText = "Your special gift awaits!";
-    const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
-    let bottomY = cursorY + 20; // espacio desde el texto principal
-    bottomLines.forEach(line => {
-        doc.text(line, marginX, bottomY);
-        bottomY += lineHeight;
     });
 
-    // === Guardar PDF ===
+    const bottomText = "Your special gift awaits!";
+    let bottomY = cursorY + 20;
+    doc.text(bottomText, marginX, bottomY);
+
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
+
+
 
 
 
