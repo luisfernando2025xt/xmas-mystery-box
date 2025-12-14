@@ -28,17 +28,29 @@ function setLanguage() {
     const select = document.getElementById("languageSelect");
     currentLanguage = select.value;
 
-    // Update all interface texts dynamically
-    document.querySelector("h1").innerText = uiText[currentLanguage].enterCode;
+    // Update UI elements
+    document.getElementById("mainHeading").innerText = uiText[currentLanguage].enterCode;
     document.getElementById("codeInput").placeholder = uiText[currentLanguage].codePlaceholder;
-    document.querySelector("#code-section button").innerText = uiText[currentLanguage].continueButton;
+    document.getElementById("verifyCodeButton").innerText = uiText[currentLanguage].continueButton;
 
-    document.querySelector("#name-section h2").innerText = uiText[currentLanguage].nameHeading;
+    document.getElementById("nameHeading").innerText = uiText[currentLanguage].nameHeading;
     document.getElementById("nameInput").placeholder = uiText[currentLanguage].namePlaceholder;
-    document.querySelector("#name-section button").innerText = uiText[currentLanguage].startLetterButton;
+    document.getElementById("startLetterButton").innerText = uiText[currentLanguage].startLetterButton;
 
-    document.querySelector("#letter-section button").innerText = uiText[currentLanguage].nextSentenceButton;
+    document.getElementById("nextSentenceButton").innerText = uiText[currentLanguage].nextSentenceButton;
     document.getElementById("downloadPDF").innerText = uiText[currentLanguage].downloadPDF;
+
+    // Update letter content if already in progress
+    if (currentLetter.length > 0 && letterIndex > 0) {
+        // Load current code in new language
+        if (lettersData[currentCode] && lettersData[currentCode][currentLanguage]) {
+            currentLetter = lettersData[currentCode][currentLanguage];
+            document.getElementById("letterText").innerHTML = "";
+            for (let i = 0; i < letterIndex; i++) {
+                document.getElementById("letterText").innerHTML += currentLetter[i] + "<br><br>";
+            }
+        }
+    }
 }
 
 // ------------------ Code Verification ------------------
@@ -128,8 +140,8 @@ function downloadLetterPDF() {
     tempDoc.setFont("Courier", "normal");
     tempDoc.setFontSize(14.2);
     const lines = tempDoc.splitTextToSize(fullText, pageWidth - marginX * 2);
-    const textHeight = lines.length * lineHeight;
 
+    const textHeight = lines.length * lineHeight;
     const pageHeight = marginTop + imageHeight + 20 + titleFontSize + 20 + textHeight + 20 + lineHeight + bottomMargin;
 
     const doc = new jsPDF({ unit: "pt", format: [pageWidth, pageHeight] });
@@ -140,13 +152,13 @@ function downloadLetterPDF() {
     const imageY = marginTop;
     doc.addImage(santaImageURL, "PNG", imageX, imageY, imageWidth, imageHeight);
 
-    // Draw PDF title
+    // Draw title
     const title = uiText[currentLanguage].pdfTitle;
-    doc.setFontSize(titleFontSize);
     const titleY = imageY + imageHeight + 20;
+    doc.setFontSize(titleFontSize);
     doc.text(title, pageWidth / 2, titleY, { align: "center" });
 
-    // Draw main letter text
+    // Draw main text
     doc.setFontSize(14.2);
     let cursorY = titleY + 20;
     lines.forEach(line => {
@@ -154,7 +166,7 @@ function downloadLetterPDF() {
         cursorY += lineHeight;
     });
 
-    // Draw ending text
+    // Draw ending
     const bottomText = uiText[currentLanguage].pdfEnding;
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
     let bottomY = cursorY + 20;
