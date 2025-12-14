@@ -1,58 +1,67 @@
 let validCodes = {};
 let lettersData = {};
+let uiText = {};
 let currentCode = "";
 let currentLetter = [];
 let letterIndex = 0;
 let userName = "";
+let currentLanguage = "EN"; // default language
 
-// Santa premium image from GitHub Raw
 const santaImageURL = "https://raw.githubusercontent.com/luisfernando2025xt/xmas-mystery-box/refs/heads/main/santa.png";
 
-// Load codes.json and letters.json
+// Load JSON files
 Promise.all([
     fetch("codes.json").then(r => r.json()),
-    fetch("letters.json").then(r => r.json())
-]).then(([codes, letters]) => {
+    fetch("letters.json").then(r => r.json()),
+    fetch("ui_text.json").then(r => r.json())
+]).then(([codes, letters, ui]) => {
     validCodes = codes;
     lettersData = letters;
+    uiText = ui;
+    setLanguage(); // initialize UI text
 });
+
+// Set language and update UI text
+function setLanguage() {
+    const select = document.getElementById("languageSelect");
+    currentLanguage = select.value;
+
+    document.querySelector("h1").innerText = uiText[currentLanguage].enterCode;
+    document.getElementById("codeInput").placeholder = uiText[currentLanguage].codePlaceholder;
+    document.querySelector("#code-section button").innerText = uiText[currentLanguage].continueButton;
+    document.querySelector("#name-section h2").innerText = uiText[currentLanguage].nameHeading;
+    document.getElementById("nameInput").placeholder = uiText[currentLanguage].namePlaceholder;
+    document.querySelector("#name-section button").innerText = uiText[currentLanguage].startLetterButton;
+    document.getElementById("downloadPDF").innerText = uiText[currentLanguage].downloadPDF;
+}
 
 // Verify code
 function verifyCode() {
     const codeInput = document.getElementById("codeInput").value.trim();
 
     if (!(codeInput in validCodes)) {
-        alert("Invalid code");
-        return;
+        return alert(uiText[currentLanguage].invalidCode);
     }
 
     if (validCodes[codeInput].used) {
-        alert("This code has already been used.");
-        return;
+        return alert(uiText[currentLanguage].codeUsed);
     }
 
     currentCode = codeInput;
 
-    if (lettersData[currentCode]) {
-        currentLetter = lettersData[currentCode];
+    if (lettersData[currentCode] && lettersData[currentCode][currentLanguage]) {
+        currentLetter = lettersData[currentCode][currentLanguage];
     } else {
-        alert("Letter not found for this code.");
-        return;
+        return alert("Letter not found for this code in the selected language.");
     }
 
     document.getElementById("code-section").classList.add("hidden");
     document.getElementById("name-section").classList.remove("hidden");
 }
 
-// Mark code as used
+// Mark code as used (client-side only)
 function markCodeUsed() {
     validCodes[currentCode].used = true;
-
-    fetch("codes.json", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(validCodes)
-    });
 }
 
 // Start letter
@@ -67,6 +76,7 @@ function startLetter() {
     document.getElementById("letter-section").classList.remove("hidden");
 
     letterIndex = 0;
+    document.getElementById("letterText").innerHTML = "";
     nextSentence();
 }
 
@@ -95,71 +105,41 @@ function downloadLetterPDF() {
     const titleFontSize = 24;
     const pageWidth = 370;
 
-    // Texto principal
-    const fullText = `Dear ${userName},\n\n` + currentLetter.join("\n\n");
+    const fullText = `${uiText[currentLanguage].pdfGreeting} ${userName},\n\n` + currentLetter.join("\n\n");
 
-    // Creamos un doc temporal para calcular altura del texto
     const tempDoc = new jsPDF({ unit: "pt", format: [pageWidth, 1000] });
     tempDoc.setFont("Courier", "normal");
     tempDoc.setFontSize(14.2);
     const lines = tempDoc.splitTextToSize(fullText, pageWidth - marginX * 2);
     const textHeight = lines.length * lineHeight;
 
-    // Altura total del PDF
     const pageHeight = marginTop + imageHeight + 20 + titleFontSize + 20 + textHeight + 20 + lineHeight + bottomMargin;
 
-    // Creamos el PDF final con altura dinámica
-    const doc = new jsPDF({
-        unit: "pt",
-        format: [pageWidth, pageHeight]
-    });
+    const doc = new jsPDF({ unit: "pt", format: [pageWidth, pageHeight] });
     doc.setFont("Courier", "normal");
 
-    // === Dibujar imagen de Santa al tope, centrada ===
     const imageX = (pageWidth - imageWidth) / 2;
     const imageY = marginTop;
-    doc.addImage(
-        santaImageURL,
-        "PNG",
-        imageX,
-        imageY,
-        imageWidth,
-        imageHeight
-    );
+    doc.addImage(santaImageURL, "PNG", imageX, imageY, imageWidth, imageHeight);
 
-    // === Dibujar título debajo de la imagen ===
-    const title = "Santa's Letter";
-    doc.setFontSize(titleFontSize);
     const titleY = imageY + imageHeight + 20;
-    doc.text(title, pageWidth / 2, titleY, { align: "center" });
+    doc.setFontSize(titleFontSize);
+    doc.text(uiText[currentLanguage].pdfTitle, pageWidth / 2, titleY, { align: "center" });
 
-    // === Dibujar texto principal ===
     doc.setFontSize(14.2);
     let cursorY = titleY + 20;
-    for (let i = 0; i < lines.length; i++) {
-        doc.text(lines[i], marginX, cursorY);
+    lines.forEach(line => {
+        doc.text(line, marginX, cursorY);
         cursorY += lineHeight;
-    }
+    });
 
-    // === Dibujar frase final al fondo ===
-    const bottomText = "Your special gift awaits!";
+    const bottomText = uiText[currentLanguage].pdfEnding;
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
-    let bottomY = cursorY + 20; // espacio desde el texto principal
+    let bottomY = cursorY + 20;
     bottomLines.forEach(line => {
         doc.text(line, marginX, bottomY);
         bottomY += lineHeight;
     });
 
-    // === Guardar PDF ===
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
-
-
-
-
-
-
-
-
-
-
