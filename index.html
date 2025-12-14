@@ -2,56 +2,129 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Santa Access</title>
 
 <!-- jsPDF CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body styling */
 body {
     background: #000;
-    color: white;
-    font-family: 'Courier New', monospace;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
     text-align: center;
-    padding: 40px;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-input, select {
-    font-size: 20px;
-    padding: 10px;
-    text-align: center;
-    width: 250px;
-    margin-bottom: 15px;
+/* Sticky language selector */
+#language-container {
+    position: sticky;
+    top: 0;
+    background: #000;
+    padding: 10px 0;
+    z-index: 100;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #444;
 }
 
-select {
-    text-align-last: center; /* centers selected option */
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 18px;
+/* Language selector styling */
+#languageSelect {
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background: #111;
+    color: #fff;
     cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 15px;
 }
 
-.hidden { display: none; }
+/* Headings */
+h1, h2 {
+    margin: 20px 0 15px 0;
+}
 
+/* Input styling */
+input {
+    font-size: 18px;
+    padding: 12px;
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background: #111;
+    color: #fff;
+}
+
+/* Buttons */
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 8px;
+    border-radius: 5px;
+    border: none;
+    background: #ff4500; /* premium accent color */
+    color: #fff;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #ff6347;
+}
+
+/* Letter text */
 #letterText {
-    margin-top: 20px;
+    text-align: left;
+    max-width: 500px;
+    margin: 20px auto;
     line-height: 1.6;
-    white-space: pre-wrap;
+}
+
+/* Hidden sections */
+.hidden {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    input {
+        width: 95%;
+    }
+    button {
+        width: 90%;
+    }
+    #letterText {
+        font-size: 16px;
+    }
 }
 </style>
-
 </head>
+
 <body>
 
-<!-- Language Selector -->
-<div id="language-section">
-    <label for="languageSelect">Choose your language:</label>
-    <br>
+<!-- Sticky language selector -->
+<div id="language-container">
+    <label for="languageSelect" style="margin-right:10px;">🌐</label>
     <select id="languageSelect" onchange="setLanguage()">
         <option value="EN">English</option>
         <option value="ES">Español</option>
@@ -59,33 +132,28 @@ button {
     </select>
 </div>
 
-<!-- Main Heading -->
+<!-- Main content -->
 <h1 id="mainHeading">🎅 Enter Your Access Code</h1>
 
-<!-- Code Section -->
 <div id="code-section">
-    <input id="codeInput" placeholder="Enter your code" type="text">
+    <input id="codeInput" placeholder="Enter your code">
     <br>
-    <button id="verifyCodeButton" type="button" onclick="verifyCode()">Continue</button>
+    <button id="verifyCodeButton" onclick="verifyCode()">Continue</button>
 </div>
 
-<!-- Name Section -->
 <div id="name-section" class="hidden">
     <h2 id="nameHeading">Enter your name</h2>
-    <input id="nameInput" placeholder="Your name" type="text">
+    <input id="nameInput" placeholder="Your name">
     <br>
-    <button id="startLetterButton" type="button" onclick="startLetter()">Start Letter</button>
+    <button id="startLetterButton" onclick="startLetter()">Start Letter</button>
 </div>
 
-<!-- Letter Section -->
 <div id="letter-section" class="hidden">
     <p id="letterText"></p>
-    <button id="nextSentenceButton" type="button" onclick="nextSentence()">Continue Letter</button>
-    <br>
-    <button id="downloadPDF" class="hidden" type="button" onclick="downloadLetterPDF()">Download PDF</button>
+    <button id="nextSentenceButton" onclick="nextSentence()">Continue Letter</button>
+    <button id="downloadPDF" class="hidden" onclick="downloadLetterPDF()">Download PDF</button>
 </div>
 
-<!-- Main Script -->
 <script src="script.js"></script>
 
 </body>
