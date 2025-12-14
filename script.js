@@ -24,13 +24,11 @@ Promise.all([
 });
 
 // ------------------ Language Functions ------------------
-
-// Called when user changes the language dropdown
 function setLanguage() {
     const select = document.getElementById("languageSelect");
     currentLanguage = select.value;
 
-    // Update UI elements
+    // Update all interface texts dynamically
     document.querySelector("h1").innerText = uiText[currentLanguage].enterCode;
     document.getElementById("codeInput").placeholder = uiText[currentLanguage].codePlaceholder;
     document.querySelector("#code-section button").innerText = uiText[currentLanguage].continueButton;
@@ -39,6 +37,7 @@ function setLanguage() {
     document.getElementById("nameInput").placeholder = uiText[currentLanguage].namePlaceholder;
     document.querySelector("#name-section button").innerText = uiText[currentLanguage].startLetterButton;
 
+    document.querySelector("#letter-section button").innerText = uiText[currentLanguage].nextSentenceButton;
     document.getElementById("downloadPDF").innerText = uiText[currentLanguage].downloadPDF;
 }
 
@@ -58,10 +57,10 @@ function verifyCode() {
 
     currentCode = codeInput;
 
-    if (lettersData[currentCode]) {
+    if (lettersData[currentCode] && lettersData[currentCode][currentLanguage]) {
         currentLetter = lettersData[currentCode][currentLanguage];
     } else {
-        alert("Letter not found for this code."); // fallback
+        alert(uiText[currentLanguage].letterNotFound || "Letter not found for this code.");
         return;
     }
 
@@ -122,7 +121,7 @@ function downloadLetterPDF() {
     const titleFontSize = 24;
     const pageWidth = 370;
 
-    // Use language-specific greeting and ending
+    // Language-specific greeting and ending
     const fullText = `${uiText[currentLanguage].pdfGreeting} ${userName},\n\n` + currentLetter.join("\n\n");
 
     const tempDoc = new jsPDF({ unit: "pt", format: [pageWidth, 1000] });
@@ -141,21 +140,21 @@ function downloadLetterPDF() {
     const imageY = marginTop;
     doc.addImage(santaImageURL, "PNG", imageX, imageY, imageWidth, imageHeight);
 
-    // Draw title
+    // Draw PDF title
     const title = uiText[currentLanguage].pdfTitle;
     doc.setFontSize(titleFontSize);
     const titleY = imageY + imageHeight + 20;
     doc.text(title, pageWidth / 2, titleY, { align: "center" });
 
-    // Draw main text
+    // Draw main letter text
     doc.setFontSize(14.2);
     let cursorY = titleY + 20;
-    for (let i = 0; i < lines.length; i++) {
-        doc.text(lines[i], marginX, cursorY);
+    lines.forEach(line => {
+        doc.text(line, marginX, cursorY);
         cursorY += lineHeight;
-    }
+    });
 
-    // Draw ending
+    // Draw ending text
     const bottomText = uiText[currentLanguage].pdfEnding;
     const bottomLines = doc.splitTextToSize(bottomText, pageWidth - marginX * 2);
     let bottomY = cursorY + 20;
