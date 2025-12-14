@@ -4,12 +4,11 @@ let currentCode = "";
 let currentLetter = [];
 let letterIndex = 0;
 let userName = "";
+
 // Detect TikTok in-app browser
 function isTikTokBrowser() {
     return /TikTok/i.test(navigator.userAgent);
 }
-
-
 
 // Santa premium image from GitHub Raw
 const santaImageURL = "https://raw.githubusercontent.com/luisfernando2025xt/xmas-mystery-box/refs/heads/main/santa.png";
@@ -93,12 +92,7 @@ function downloadLetterPDF() {
 
     // 🚨 TikTok in-app browser protection
     if (isTikTokBrowser()) {
-        alert(
-            "To download your Santa Letter:\n\n" +
-            "1️⃣ Tap the three dots ⋯\n" +
-            "2️⃣ Select “Open in browser”\n" +
-            "3️⃣ Download your letter instantly 🎄"
-        );
+        document.getElementById("tiktokNotice").style.display = "block";
         return;
     }
 
@@ -119,7 +113,6 @@ function downloadLetterPDF() {
     tempDoc.setFont("Courier", "normal");
     tempDoc.setFontSize(14.2);
     const lines = tempDoc.splitTextToSize(fullText, pageWidth - marginX * 2);
-    const textHeight = lines.length * lineHeight;
 
     const pageHeight =
         marginTop +
@@ -127,7 +120,7 @@ function downloadLetterPDF() {
         20 +
         titleFontSize +
         20 +
-        textHeight +
+        (lines.length * lineHeight) +
         20 +
         lineHeight +
         bottomMargin;
@@ -156,20 +149,12 @@ function downloadLetterPDF() {
     });
 
     const bottomText = "Your special gift awaits!";
-    let bottomY = cursorY + 20;
-    doc.text(bottomText, marginX, bottomY);
+    doc.text(bottomText, marginX, cursorY + 20);
 
     doc.save(`Santa_Letter_${userName}.pdf`);
 }
 
-
-
-
-
-
-
-
-
-
-
-
+// ✅ ESTA FUNCIÓN VA AQUÍ, FUERA DE TODO
+function closeTikTokNotice() {
+    document.getElementById("tiktokNotice").style.display = "none";
+}
